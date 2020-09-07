@@ -1,6 +1,6 @@
 import React from "react";
-import { Grid, Segment, Header, Radio, Checkbox } from "semantic-ui-react";
-import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField, LongTextField } from "uniforms-semantic";
+import { Grid, Segment, Header, Checkbox } from "semantic-ui-react";
+import { AutoForm, ErrorsField, SubmitField, LongTextField } from "uniforms-semantic";
 import swal from "sweetalert";
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema2Bridge } from "uniforms-bridge-simple-schema-2";
@@ -64,6 +64,7 @@ class DeleteForm extends React.Component {
                             <Header as="h3">We&apos;re sorry to hear you&apos;re deleting your account.</Header>
                             <Header as="h4">Please provide feedback on why you&apos;re leaving
                                 to improve the HACC experience for next year.</Header>
+                            <br/>
                             <Grid>
                                 <Grid.Row columns={2}>
                                     <Grid.Column>
