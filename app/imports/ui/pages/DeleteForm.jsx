@@ -9,16 +9,11 @@ import { stuffDefineMethod } from "../../api/stuff/StuffCollection.methods";
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
-    name: String,
-    quantity: Number,
-    condition: {
-        type: String,
-        allowedValues: ["excellent", "good", "fair", "poor"],
-        defaultValue: "good"
-    },
-    noChallenge: Checkbox,
-    noTeam: Checkbox,
-    other: String
+    noChallenge: { type: Checkbox, required: false },
+    difficultChallenge: { type: Checkbox, required: false },
+    noTeam: { type: Checkbox, required: false },
+    noTime: { type: Checkbox, required: false },
+    other: { type: String, required: false }
 });
 
 /**
@@ -33,10 +28,10 @@ class DeleteForm extends React.Component {
      */
     submit(data, formRef) {
         // console.log('DeleteForm.submit', data);
-        const { noChallenge, noTeam, other } = data;
+        const { noChallenge, difficultChallenge, noTeam, noTime, other } = data;
         const owner = Meteor.user().username;
         // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
-        stuffDefineMethod.call({ noChallenge, noTeam, other, owner },
+        stuffDefineMethod.call({ noChallenge, difficultChallenge, noTeam, noTime, other, owner },
             (error) => {
                 if (error) {
                     swal("Error", error.message, "error");
@@ -69,19 +64,27 @@ class DeleteForm extends React.Component {
                             <Header as="h3">We&apos;re sorry to hear you&apos;re deleting your account.</Header>
                             <Header as="h4">Please provide feedback on why you&apos;re leaving
                                 to improve the HACC experience for next year.</Header>
-                            <Checkbox name='noChallenge' label='No challenge was interesting for me'/>
-                            <br/>
-                            <br/>
-                            <Checkbox name='noTeam' label='Couldn&apos;t find a team I liked being on'/>
-                            <br/>
-                            <br/>
-                            <Checkbox name='difficultChallenge' label='The challenges were too hard'/>
-                            <br/>
-                            <br/>
-                            <Checkbox name='toTime' label='My schedule conflicts with the HACC schedule'/>
-                            <br/>
-                            <br/>
-                            <LongTextField name='other'/>
+                            <Grid>
+                                <Grid.Row columns={2}>
+                                    <Grid.Column>
+                                        <Checkbox name='noChallenge' label='No challenge was interesting for me'/>
+                                        <br/>
+                                        <br/>
+                                        <Checkbox name='difficultChallenge' label='The challenges were too hard'/>
+                                        <br/>
+                                        <br/>
+                                        <Checkbox name='noTeam' label='Couldn&apos;t find a team I liked being on'/>
+                                        <br/>
+                                        <br/>
+                                        <Checkbox name='toTime' label='My schedule conflicts with the HACC schedule'/>
+                                        <br/>
+                                        <br/>
+                                    </Grid.Column>
+                                    <Grid.Column>
+                                        <LongTextField name='other'/>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
                             <SubmitField value=' Submit'/>
                             <ErrorsField/>
                         </Segment>

@@ -31,7 +31,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={Landing}/>
               <Route path="/signin" component={Signin}/>
-              <ProtectedRoute path="/list" component={ListStuff}/>
+                <ProtectedRoute path="/team" component={TeamCreation}/>
                 <ProtectedRoute path="/add" component={AddStuff}/>
                 <ProtectedRoute path="/delete" component={DeleteForm}/>
                 <ProtectedRoute path="/edit/:_id" component={EditStuff}/>

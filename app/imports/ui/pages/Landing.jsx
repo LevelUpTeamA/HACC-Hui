@@ -18,7 +18,8 @@ class Landing extends React.Component {
                     <br />
                     <br />
                     Here you can create a new team or join an already made one.
-                    Our application can help you find the perfect team for you, or help you look for members that fit your team’s requirements.
+                      Our application can help you find the perfect team for you,
+                      or help you look for members that fit your team’s requirements.
                   </p>
               </Grid.Column>
               <Grid.Column width={8} centered style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
