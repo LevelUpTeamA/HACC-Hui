@@ -13,7 +13,8 @@ import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signout from '../pages/Signout';
-import DeveloperProfile from '../pages/DeveloperProfile';
+import AddStuff from '../pages/AddStuff';
+import UpdateProfile from '../pages/UpdateProfile';
 import withAllSubscriptions from './AllSubscriptionsHOC';
 import { ROLE } from '../../api/role/Role';
 
@@ -31,7 +32,8 @@ class App extends React.Component {
               <Route exact path="/" component={Landing}/>
               <Route path="/signin" component={Signin}/>
               <ProtectedRoute path="/list" component={ListStuff}/>
-              <ProtectedRoute path="/add" component={DeveloperProfile}/>
+              <ProtectedRoute path="/add" component={AddStuff}/>
+              <ProtectedRoute path="/update" component={UpdateProfile}/>
               <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/signout" component={Signout}/>
