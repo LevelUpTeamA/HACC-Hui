@@ -1,108 +1,83 @@
+import { Meteor } from "meteor/meteor";
 import React from "react";
-import { Grid, Segment, Header, Checkbox, Icon } from "semantic-ui-react";
-import { AutoForm, ErrorsField, LongTextField } from "uniforms-semantic";
+import { Grid, Segment, Header, Icon } from "semantic-ui-react";
+import { AutoForm, ErrorsField, LongTextField, SelectField } from "uniforms-semantic";
 import Button from "semantic-ui-react/dist/commonjs/elements/Button";
 import Modal from "semantic-ui-react/dist/commonjs/modules/Modal";
-import swal from "sweetalert";
-import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
 import { NavLink } from "react-router-dom";
 import { SimpleSchema2Bridge } from "uniforms-bridge-simple-schema-2";
 import SimpleSchema from "simpl-schema";
+import { withTracker } from "meteor/react-meteor-data";
+import PropTypes from "prop-types";
 import moment from "moment";
+import { Developers } from "../../api/user/DeveloperCollection";
 import { userInteractionDefineMethod } from "../../api/user/UserInteractionCollection.methods";
-
-// Create a schema to specify the structure of the data to appear in the form.
-const schema = new SimpleSchema({
-    typeData: { type: Array },
-    "typeData.$": { type: String },
-    timestamp: { type: Date },
-    noChallenge: { type: String, required: false },
-    difficultChallenge: { type: String, required: false },
-    noTeam: { type: String, required: false },
-    noTime: { type: String, required: false },
-    other: { type: String, required: false }
-});
+import { removeItMethod } from "../../api/base/BaseCollection.methods";
+import { userInteractionTypes } from "../../api/user/UserInteractionCollection";
 
 /**
  * Renders the Page for deleting a user. **deprecated**
  * @memberOf ui/pages
  */
 class DeleteForm extends React.Component {
-    deleteAccount = () => {
-        this.submit();
-        this.handleOpen();
-        // Meteor.users.allow({
-        //     remove: function (userId, doc) {
-        //         return doc && doc.userId === userId;
-        //     }
-        // });
-        // Meteor.users.remove({ _id: this._id }, function (error, result) {
-        //     if (error) {
-        //         console.log("Error removing user: ", error);
-        //     } else {
-        //         console.log(`Number of users removed: ${result}`);
-        //     }
-        // });
-    };
 
     /** On submit, insert the data.
      * @param data {Object} the results from the form.
      * @param formRef {FormRef} reference to the form.
      */
-    submit(data, formRef) {
-        console.log("DeleteForm.submit", data);
-        const {
-            noChallenge,
-            difficultChallenge,
-            noTeam,
-            noTime,
-            other
-        } = data;
+    submit(data) {
+        // console.log("DeleteForm.submit", data);
         const username = Meteor.user().username;
-        const type = "deleteAccount";
+        const type = userInteractionTypes.deleteAccount;
+        const typeData = [];
+        typeData.push(data.reason);
+        typeData.push(data.other);
         const timestamp = moment().toDate();
-        console.log(`{ ${username}, ${type}, ${timestamp}`);
-        userInteractionDefineMethod.call({
-                username,
-                type,
-                timestamp,
-                noChallenge,
-                difficultChallenge,
-                noTeam,
-                noTime,
-                other
-            },
-            (error) => {
-                if (error) {
-                    swal("Error", error.message, "error");
-                    // console.error(error.message);
-                } else {
-                    swal("Success", "Item added successfully", "success");
-                    formRef.reset();
-                    // console.log('Success');
-                }
-            });
+        const userInteraction = {
+            username,
+            type,
+            typeData,
+            timestamp
+        };
+        userInteractionDefineMethod.call(userInteraction);
+        const instance = this.props.doc._id;
+        removeItMethod.call({ Developers, instance });
+        this.handleOpen();
     }
 
     /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
 
     state = { modalOpen: false }
 
+    handleChange = (e, { value }) => this.setState({ value });
+
     handleOpen = () => this.setState({ modalOpen: true });
 
     handleClose = () => this.setState({ modalOpen: false });
 
     render() {
-        let fRef = null;
+        const reasons = [
+            "No challenge was interesting for me",
+            "The challenges were too hard",
+            "Couldn&apos;t find a team I liked being on",
+            "My schedule conflicts with the HACC",
+            "Other"
+        ];
+        // Create a schema to specify the structure of the data to appear in the form.
+        const schema = new SimpleSchema({
+            reason: {
+                type: String,
+                allowedValues: reasons,
+                defaultValue: "Other"
+            },
+            other: { type: String, required: false }
+        });
         const formSchema = new SimpleSchema2Bridge(schema);
         return (
             <Grid container centered>
                 <Grid.Column>
                     <Header as="h2" textAlign="center">Feedback</Header>
-                    <AutoForm ref={ref => {
-                        fRef = ref;
-                    }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
+                    <AutoForm schema={formSchema} onSubmit={data => this.submit(data)}>
                         <Segment>
                             <Header as="h3">We&apos;re sorry to hear you&apos;re deleting your account.</Header>
                             <Header as="h4">Please provide feedback on why you&apos;re leaving
@@ -111,18 +86,7 @@ class DeleteForm extends React.Component {
                             <Grid>
                                 <Grid.Row columns={2}>
                                     <Grid.Column>
-                                        <Checkbox name='noChallenge' label='No challenge was interesting for me'/>
-                                        <br/>
-                                        <br/>
-                                        <Checkbox name='difficultChallenge' label='The challenges were too hard'/>
-                                        <br/>
-                                        <br/>
-                                        <Checkbox name='noTeam' label='Couldn&apos;t find a team I liked being on'/>
-                                        <br/>
-                                        <br/>
-                                        <Checkbox name='toTime' label='My schedule conflicts with the HACC'/>
-                                        <br/>
-                                        <br/>
+                                        <SelectField name='reason'/>
                                     </Grid.Column>
                                     <Grid.Column>
                                         <LongTextField name='other'/>
@@ -130,7 +94,7 @@ class DeleteForm extends React.Component {
                                 </Grid.Row>
                             </Grid>
                             <Button basic color='red'
-                                    onClick={this.deleteAccount}
+                                    onClick={this.submit}
                                     value='Submit'>
                                 Delete Account
                             </Button>
@@ -161,4 +125,24 @@ class DeleteForm extends React.Component {
     }
 }
 
-export default DeleteForm;
+/**
+ * Require the presence of a DeleteForm document in the props object. Uniforms adds 'model' to the props, which we
+ * use.
+ */
+DeleteForm.propTypes = {
+    doc: PropTypes.object,
+    model: PropTypes.object,
+    ready: PropTypes.bool.isRequired
+};
+
+/** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
+export default withTracker(({ match }) => {
+    // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
+    const documentId = match.params._id;
+    // Get access to Stuff documents.
+    const subscription = Meteor.subscribe("Developers");
+    return {
+        doc: Developers.findOne(documentId),
+        ready: subscription.ready()
+    };
+})(DeleteForm);
