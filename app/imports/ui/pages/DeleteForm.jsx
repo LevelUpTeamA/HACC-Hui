@@ -30,8 +30,7 @@ class DeleteForm extends React.Component {
         const username = Meteor.user().username;
         const type = userInteractionTypes.deleteAccount;
         const typeData = [];
-        typeData.push(data.reason);
-        typeData.push(data.other);
+        typeData.push(data.feedback, data.other);
         const timestamp = moment().toDate();
         const userInteraction = {
             username,
@@ -65,7 +64,7 @@ class DeleteForm extends React.Component {
         ];
         // Create a schema to specify the structure of the data to appear in the form.
         const schema = new SimpleSchema({
-            reason: {
+            feedback: {
                 type: String,
                 allowedValues: reasons,
                 defaultValue: "Other"
@@ -86,7 +85,7 @@ class DeleteForm extends React.Component {
                             <Grid>
                                 <Grid.Row columns={2}>
                                     <Grid.Column>
-                                        <SelectField name='reason'/>
+                                        <SelectField name='feedback'/>
                                     </Grid.Column>
                                     <Grid.Column>
                                         <LongTextField name='other'/>
