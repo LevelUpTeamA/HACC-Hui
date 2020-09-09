@@ -7,15 +7,15 @@ import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
-import TeamCreation from "../pages/TeamCreation";
+import TeamCreation from '../pages/TeamCreation';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddStuff from '../pages/AddStuff';
-import DeleteForm from "../pages/DeleteForm";
+import DeleteForm from '../pages/DeleteForm';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signout from '../pages/Signout';
-import DeveloperProfile from "../pages/DeveloperProfile";
+import DeveloperProfile from '../pages/DeveloperProfile';
 import withAllSubscriptions from './AllSubscriptionsHOC';
 import { ROLE } from '../../api/role/Role';
 
