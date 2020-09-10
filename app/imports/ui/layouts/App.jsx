@@ -15,9 +15,15 @@ import AddTool from '../pages/AddTools';
 import EditChallenges from '../pages/EditChallenges';
 import EditSkills from '../pages/EditSkills';
 import EditTools from '../pages/EditTools';
+import TeamCreation from '../pages/TeamCreation';
+import ListStuffAdmin from '../pages/ListStuffAdmin';
+import AddStuff from '../pages/AddStuff';
+import DeleteForm from '../pages/DeleteForm';
+import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signout from '../pages/Signout';
+import DeveloperProfile from '../pages/DeveloperProfile';
 import withAllSubscriptions from './AllSubscriptionsHOC';
 import { ROLE } from '../../api/role/Role';
 
@@ -34,6 +40,10 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={Landing}/>
               <Route path="/signin" component={Signin}/>
+              <ProtectedRoute path="/team" component={TeamCreation}/>
+              <ProtectedRoute path="/add" component={AddStuff}/>
+              <ProtectedRoute path="/delete" component={DeleteForm}/>
+              <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
               <ProtectedRoute path="/list" component={ListStuff}/>
               <ProtectedRoute path="/addChallenge" component={AddChallenge}/>
               <ProtectedRoute path="/addSkill" component={AddSkill}/>
@@ -42,6 +52,7 @@ class App extends React.Component {
               <ProtectedRoute path="/editSkills/:_id" component={EditSkills}/>
               <ProtectedRoute path="/editTools/:_id" component={EditTools}/>
               <AdminProtectedRoute path="/admin" component={AdminConfiguration}/>
+              <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/signout" component={Signout}/>
               <Route component={NotFound}/>
             </Switch>
@@ -114,5 +125,5 @@ AdminProtectedRoute.propTypes = {
   ]),
   location: PropTypes.object,
 };
- 
+
 export default App;
