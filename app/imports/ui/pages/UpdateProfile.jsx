@@ -18,7 +18,8 @@ import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { stuffDefineMethod } from '../../api/stuff/StuffCollection.methods';
 import { Developers } from '../../api/user/DeveloperCollection';
-import '../../api/base/BaseCollection.methods';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { getCollectionName } from '../../api/base/BaseCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -94,11 +95,11 @@ class UpdateProfile extends React.Component {
   submit(data, formRef) {
     // console.log('AddStuff.submit', data);
     const { username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe} = data;
-    const newData = {
+    const definitionData = {
       username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe
     };
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
-    defineMethod.call({ collectionName: Developers.getCollectionName(), newData: newData },
+    defineMethod.call({ collectionName: Developers.getCollectionName(), definitionData: definitionData },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
