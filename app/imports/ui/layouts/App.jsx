@@ -10,6 +10,13 @@ import Landing from '../pages/Landing';
 import ListStuff from '../pages/ListStuff';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import EditStuff from '../pages/EditStuff';
+import AdminConfiguration from '../pages/AdminConfiguration';
+import AddChallenge from '../pages/AddChallenges';
+import AddSkill from '../pages/AddSkills';
+import AddTool from '../pages/AddTools';
+import EditChallenges from '../pages/EditChallenges';
+import EditSkills from '../pages/EditSkills';
+import EditTools from '../pages/EditTools';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signout from '../pages/Signout';
@@ -36,6 +43,13 @@ class App extends React.Component {
               <ProtectedRoute path="/update" component={UpdateProfile}/>
               <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
+              <ProtectedRoute path="/addChallenge" component={AddChallenge}/>
+              <ProtectedRoute path="/addSkill" component={AddSkill}/>
+              <ProtectedRoute path="/addTool" component={AddTool}/>
+              <ProtectedRoute path="/editChallenges/:_id" component={EditChallenges}/>
+              <ProtectedRoute path="/editSkills/:_id" component={EditSkills}/>
+              <ProtectedRoute path="/editTools/:_id" component={EditTools}/>
+              <AdminProtectedRoute path="/admin" component={AdminConfiguration}/>
               <ProtectedRoute path="/signout" component={Signout}/>
               <Route component={NotFound}/>
             </Switch>
