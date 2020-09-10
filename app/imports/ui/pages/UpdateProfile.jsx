@@ -122,8 +122,10 @@ class UpdateProfile extends React.Component {
             <Header as="h2" textAlign="center" inverted>Update Your Profile</Header>
             <AutoForm ref={ref => { fRef = ref; }} schema={formSchema} onSubmit={data => this.submit(data, fRef)} >
               <Segment>
-                <TextField name='first' placeholer={'First Name'}/>
-                <TextField name='last' placeholer={'Last Name'}/>
+                <Form.Group widths={'equal'}>
+                  <TextField name='first' placeholer={'First Name'}/>
+                  <TextField name='last' placeholer={'Last Name'}/>
+                </Form.Group>
                 <TextField name='username' placeholer={'Username'}/>
                 <MultiSelectField name='skills' placeholder={'Skills'} required/>
                 <MultiSelectField name='tools' placeholder={'Tools'} required/>
