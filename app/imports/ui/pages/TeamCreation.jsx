@@ -20,6 +20,8 @@ import MultiSelectField from '../controllers/MultiSelectField';
 import RadioField from '../controllers/RadioField';
 import { Teams } from '../../api/team/TeamCollection';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
+import { Skills } from '../../api/skill/SkillCollection';
+import { Tools } from '../../api/tool/ToolCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -32,9 +34,9 @@ const schema = new SimpleSchema({
   challenges: { type: Array, label: 'Challenges' },
   'challenges.$': { type: String },
   skills: { type: Array, label: 'Skills' },
-  'skills.$': { type: String, allowedValues: ['React', 'Javascript'] },
+  'skills.$': { type: String },
   tools: { type: Array, label: 'Toolsets' },
-  'tools.$': { type: String, allowedValues: ['Graphic Design', 'Photoshop'] },
+  'tools.$': { type: String },
   description: String,
   owner: String,
 });
@@ -89,6 +91,8 @@ class TeamCreation extends React.Component {
     const formSchema = new SimpleSchema2Bridge(schema);
 
     const challengeArr = _.map(this.props.challenges, 'title');
+    const skillArr = _.map(this.props.skills, 'name');
+    const toolArr = _.map(this.props.tools, 'name');
 
     return (
           <Grid container centered>
@@ -119,8 +123,10 @@ class TeamCreation extends React.Component {
                       <LongTextField name='description'/>
                       <MultiSelectField name='challenges' placeholder={'Challenges'}
                                         allowedValues={challengeArr} required/>
-                      <MultiSelectField name='skills' placeholder={'Skills'} required/>
-                      <MultiSelectField name='tools' placeholder={'Toolsets'} required/>
+                      <MultiSelectField name='skills' placeholder={'Skills'}
+                                        allowedValues={skillArr} required/>
+                      <MultiSelectField name='tools' placeholder={'Toolsets'}
+                                        allowedValues={toolArr} required/>
                     </Grid.Column>
                   </Grid>
                   <div align='center'>
@@ -145,12 +151,19 @@ class TeamCreation extends React.Component {
 
 TeamCreation.propTypes = {
   challenges: PropTypes.array.isRequired,
+  skills: PropTypes.array.isRequired,
+  tools: PropTypes.array.isRequired,
+
 };
 
 export default withTracker(() => {
   const subscriptionChallenges = Challenges.subscribe();
+  const subscriptionSkills = Skills.subscribe();
+  const subscriptionTools = Tools.subscribe();
   return {
     challenges: Challenges.find({}).fetch(),
-    ready: subscriptionChallenges.ready(),
+    skills: Skills.find({}).fetch(),
+    tools: Tools.find({}).fetch(),
+    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready(),
   };
 })(TeamCreation);
