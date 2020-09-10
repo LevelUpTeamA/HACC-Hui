@@ -17,10 +17,15 @@ import MultiSelectField from '../forms/MultiSelectField';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { stuffDefineMethod } from '../../api/stuff/StuffCollection.methods';
-//import { Developers } from '../../api/user/DeveloperCollection';
+import { Developers } from '../../api/user/DeveloperCollection';
+import '../../api/base/BaseCollection.methods';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
+  username: {
+    type: String,
+    label: 'Username',
+  },
   first: {
     type: String,
     label: 'First Name',
@@ -28,10 +33,6 @@ const schema = new SimpleSchema({
   last: {
     type: String,
     label: 'Last Name',
-  },
-  username: {
-    type: String,
-    label: 'Username',
   },
   skills: {
     type: Array,
@@ -92,10 +93,12 @@ class UpdateProfile extends React.Component {
    */
   submit(data, formRef) {
     // console.log('AddStuff.submit', data);
-    const { first, last, username, skills, tools, challenges, linkedin, github, website, aboutMe} = data;
-    const owner = Meteor.user().username;
+    const { username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe} = data;
+    const newData = {
+      username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe
+    };
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
-    stuffDefineMethod.call({ first, last, username, skills, tools, challenges, linkedin, github, website, aboutMe },
+    defineMethod.call({ collectionName: Developers.getCollectionName(), newData: newData },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
