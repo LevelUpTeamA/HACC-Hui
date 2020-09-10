@@ -12,6 +12,7 @@ import {
 } from 'uniforms-semantic';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
+import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import MultiSelectField from '../forms/MultiSelectField';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -20,6 +21,9 @@ import { stuffDefineMethod } from '../../api/stuff/StuffCollection.methods';
 import { Developers } from '../../api/user/DeveloperCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { getCollectionName } from '../../api/base/BaseCollection';
+import { Challenges } from '../../api/challenge/ChallengeCollection';
+import { Skills } from '../../api/skill/SkillCollection';
+import { Tools } from '../../api/tool/ToolCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -93,7 +97,7 @@ class UpdateProfile extends React.Component {
    * @param formRef {FormRef} reference to the form.
    */
   submit(data, formRef) {
-    // console.log('AddStuff.submit', data);
+
     const { username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe} = data;
     const definitionData = {
       username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe
@@ -114,6 +118,9 @@ class UpdateProfile extends React.Component {
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
+    const skillsArr = _.map(this.props.skills, 'name');
+    const toolsArr = _.map(this.props.tools, 'name');
+    const challengesArr = _.map(this.props.challenges, 'name');
     let fRef = null;
     const formSchema = new SimpleSchema2Bridge(schema);
     const menuStyle = {marginTop: '2em', backgroundColor: '#5C93D1' };
@@ -128,9 +135,12 @@ class UpdateProfile extends React.Component {
                   <TextField name='last' placeholer={'Last Name'}/>
                 </Form.Group>
                 <TextField name='username' placeholer={'Username'}/>
-                <MultiSelectField name='skills' placeholder={'Skills'} required/>
-                <MultiSelectField name='tools' placeholder={'Tools'} required/>
-                <MultiSelectField name='challenges' placeholder={'Challenges'} required/>
+                <MultiSelectField name='skills' placeholder={'Skills'}
+                                  allowedValues={skillsArr} required/>
+                <MultiSelectField name='tools' placeholder={'Tools'}
+                                  allowedValues={toolsArr} required/>
+                <MultiSelectField name='challenges' placeholder={'Challenges'}
+                                  allowedValues={challengesArr} required/>
                 <TextField name='linkedin' placeholer={'LinkedIn URL'}/>
                 <TextField name='github' placeholer={'GitHub URL'}/>
                 <TextField name='website' placeholer={'Website URL'}/>
@@ -146,9 +156,15 @@ class UpdateProfile extends React.Component {
 }
 
 export default withTracker(() => {
-  // Ensure that minimongo is populated with all collections prior to running render().
-/*  const sub1 = Meteor.subscribe();
+  const subscription1 = Tools.subscribe();
+  const subscription = Skills.subscribe();
+  const subscription2 = Challenges.subscribe();
+  const subscription3 = Developers.subscribe();
   return {
-    ready: sub1.ready(),
-  }*/;
+    skills: Skills.find({}).fetch(),
+    tools: Tools.find({}).fetch(),
+    challenges: Challenges.find({}).fetch(),
+    developer: Developers.find({}).fetch(),
+    ready: subscription.ready() && subscription1.ready() && subscription2.ready() && subscription3.ready(),
+  };
 })(UpdateProfile);
