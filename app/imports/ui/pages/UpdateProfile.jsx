@@ -55,9 +55,11 @@ const schema = new SimpleSchema({
   },
   website: {
     type: String,
+    label: 'Website',
   },
   aboutMe: {
     type: String,
+    label: 'About Me',
   },
 });
 
