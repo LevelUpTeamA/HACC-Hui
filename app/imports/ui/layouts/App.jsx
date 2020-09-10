@@ -8,6 +8,8 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
 import ListStuff from '../pages/ListStuff';
+import ListStuffAdmin from '../pages/ListStuffAdmin';
+import EditStuff from '../pages/EditStuff';
 import AdminConfiguration from '../pages/AdminConfiguration';
 import AddChallenge from '../pages/AddChallenges';
 import AddSkill from '../pages/AddSkills';
@@ -23,7 +25,8 @@ import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signout from '../pages/Signout';
-import DeveloperProfile from '../pages/DeveloperProfile';
+import AddStuff from '../pages/AddStuff';
+import UpdateProfile from '../pages/UpdateProfile';
 import withAllSubscriptions from './AllSubscriptionsHOC';
 import { ROLE } from '../../api/role/Role';
 
@@ -45,6 +48,11 @@ class App extends React.Component {
               <ProtectedRoute path="/delete" component={DeleteForm}/>
               <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
               <ProtectedRoute path="/list" component={ListStuff}/>
+              <ProtectedRoute path="/list" component={ListStuff}/>
+              <ProtectedRoute path="/add" component={AddStuff}/>
+              <ProtectedRoute path="/update" component={UpdateProfile}/>
+              <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
+              <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/addChallenge" component={AddChallenge}/>
               <ProtectedRoute path="/addSkill" component={AddSkill}/>
               <ProtectedRoute path="/addTool" component={AddTool}/>
