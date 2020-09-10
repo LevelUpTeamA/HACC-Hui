@@ -42,7 +42,7 @@ class DeleteForm extends React.Component {
                 .then(() => {
                   // eslint-disable-next-line no-undef
                   window.location = '/';
-                  Meteor.logout();
+                  // Meteor.logout();
                 })
     ));
     const id = this.props.doc._id;

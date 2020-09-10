@@ -49,7 +49,6 @@ class App extends React.Component {
               <ProtectedRoute path="/add" component={AddStuff}/>
               <ProtectedRoute path="/update" component={UpdateProfile}/>
               <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
-              <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/addChallenge" component={AddChallenge}/>
               <ProtectedRoute path="/addSkill" component={AddSkill}/>
               <ProtectedRoute path="/addTool" component={AddTool}/>
@@ -57,7 +56,6 @@ class App extends React.Component {
               <ProtectedRoute path="/editSkills/:_id" component={EditSkills}/>
               <ProtectedRoute path="/editTools/:_id" component={EditTools}/>
               <AdminProtectedRoute path="/admin" component={AdminConfiguration}/>
-              <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/signout" component={Signout}/>
               <Route component={NotFound}/>
             </Switch>

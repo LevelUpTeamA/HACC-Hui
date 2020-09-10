@@ -126,7 +126,7 @@ class TeamCreation extends React.Component {
         swal('Error', error.message, 'error');
        // console.error(error.message);
       } else {
-        swal('Success', 'Item added successfully', 'success');
+        swal('Success', 'Team created successfully', 'success');
         formRef.reset();
      //   console.log('Success');
       }
