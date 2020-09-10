@@ -136,6 +136,7 @@ class TeamCreation extends React.Component {
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
+    console.log(Teams.dumpAll());
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
