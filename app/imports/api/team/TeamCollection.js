@@ -29,6 +29,7 @@ class TeamCollection extends BaseSlugCollection {
       devPostPage: { type: String, optional: true },
       owner: { type: SimpleSchema.RegEx.Id },
       open: { type: Boolean },
+      image: { type: String },
     }));
   }
 
@@ -44,13 +45,14 @@ class TeamCollection extends BaseSlugCollection {
    * @param skills {string[]} the skills this team is looking for.
    * @param tools {string[]} the tools this team wants to use.
    * @param developers {string[]} the developers on the team.
+   * @param image {String} team's image
    * @return {string} the id of the team.
    */
   define({ name, description = '', gitHubRepo = '', devPostPage = '',
-           owner, open = true, challenges, skills, tools, developers = [] }) {
+           image = '', owner, open = true, challenges, skills, tools, developers = [] }) {
     const team = slugify(name);
     const slugID = Slugs.define({ name: team });
-    const teamID = this._collection.insert({ name, slugID, description, gitHubRepo, devPostPage, owner, open });
+    const teamID = this._collection.insert({ name, slugID, description, gitHubRepo, devPostPage, image, owner, open });
     // Connect the Slug to this Interest
     Slugs.updateEntityID(slugID, teamID);
     _.each(challenges, (challenge) => TeamChallenges.define({ team, challenge }));
@@ -70,9 +72,10 @@ class TeamCollection extends BaseSlugCollection {
    * @param challenges {String[]} the new set of challenges (optional).
    * @param skills {String[]} the new set of skills (optional).
    * @param tools {String[]} the new set of tools (optional).
+   * @param image {String} team's image
    * @param developers {String[]} the new set of developers (optional).
    */
-  update(docID, { name, description, open, challenges, skills, tools, developers }) {
+  update(docID, { name, description, open, image, challenges, skills, tools, developers }) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {
@@ -83,6 +86,9 @@ class TeamCollection extends BaseSlugCollection {
     }
     if (_.isBoolean(open)) {
       updateData.open = open;
+    }
+    if (image) {
+      updateData.image = image;
     }
     this._collection.update(docID, { $set: updateData });
     const selector = { teamID: docID };
@@ -138,7 +144,7 @@ class TeamCollection extends BaseSlugCollection {
    */
   dumpOne(docID) {
     this.assertDefined(docID);
-    const { name, description, owner, open } = this.findDoc(docID);
+    const { name, description, owner, open, image } = this.findDoc(docID);
     const selector = { teamID: docID };
     const teamChallenges = TeamChallenges.find(selector).fetch();
     const challenges = _.map(teamChallenges, (tC) => Challenges.findSlugByID(tC.challengeID));
@@ -148,7 +154,7 @@ class TeamCollection extends BaseSlugCollection {
     const skills = _.map(teamSkills, (tS) => Skills.findSlugByID(tS.skillID));
     const teamTools = TeamTools.find(selector).fetch();
     const tools = _.map(teamTools, (tT) => Tools.findSlugByID(tT.toolID));
-    return { name, description, owner, open, challenges, developers, skills, tools };
+    return { name, description, owner, open, image, challenges, developers, skills, tools };
   }
 }
 
