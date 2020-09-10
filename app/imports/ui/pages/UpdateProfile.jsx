@@ -40,6 +40,14 @@ const schema = new SimpleSchema({
     type: String,
     label: 'Last Name',
   },
+  demographicLevel: {
+    type: String,
+    label: 'Demographic Level',
+  },
+  lookingTeam: {
+    type: Boolean,
+    label: 'Looking for a team?',
+  },
   skills: {
     type: Array,
     label: 'Skills',
@@ -96,9 +104,10 @@ class UpdateProfile extends React.Component {
    */
   submit(data, formRef) {
 
-    const { username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe} = data;
+    const { username, first, last, demographicLevel, lookingTeam, linkedin, github, website, aboutMe,
+      challenges, skills, tools } = data;
     const definitionData = {
-      username, first, last, skills, tools, challenges, linkedin, github, website, aboutMe
+      username, first, last, demographicLevel, lookingTeam, linkedin, github, website, aboutMe, challenges, skills, tools
     };
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     defineMethod.call({ collectionName: Developers.getCollectionName(), definitionData: definitionData },
@@ -133,6 +142,7 @@ class UpdateProfile extends React.Component {
                   <TextField name='last' placeholer={'Last Name'}/>
                 </Form.Group>
                 <TextField name='username' placeholer={'Username'}/>
+                <TextField name='demographicLevel'/>
                 <MultiSelectField name='skills' placeholder={'Skills'}
                                   allowedValues={skillsArr} required/>
                 <MultiSelectField name='tools' placeholder={'Tools'}
@@ -143,6 +153,7 @@ class UpdateProfile extends React.Component {
                 <TextField name='github' placeholer={'GitHub URL'}/>
                 <TextField name='website' placeholer={'Website URL'}/>
                 <LongTextField name='aboutMe'/>
+                <BoolField name='lookingTeam'/>
                 <SubmitField value='Submit'/>
                 <ErrorsField/>
               </Segment>
