@@ -20,7 +20,7 @@ import SimpleSchema from 'simpl-schema';
 import { stuffDefineMethod } from '../../api/stuff/StuffCollection.methods';
 import { _ } from 'lodash';
 import { Developers } from '../../api/user/DeveloperCollection';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { updateMethod } from '../../api/base/BaseCollection.methods';
 import { getCollectionName } from '../../api/base/BaseCollection';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
 import { Skills } from '../../api/skill/SkillCollection';
@@ -110,7 +110,7 @@ class UpdateProfile extends React.Component {
       username, first, last, demographicLevel, lookingTeam, linkedin, github, website, aboutMe, challenges, skills, tools
     };
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
-    defineMethod.call({ collectionName: Developers.getCollectionName(), definitionData: definitionData },
+    updateMethod.call( { collectionName: Developers.getCollectionName(), definitionData: definitionData },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
@@ -163,6 +163,13 @@ class UpdateProfile extends React.Component {
     );
   }
 }
+
+UpdateProfile.propTypes = {
+  tools: PropTypes.array.isRequired,
+  skills: PropTypes.array.isRequired,
+  challenges: PropTypes.array.isRequired,
+  developer: PropTypes.array.isRequired,
+};
 
 export default withTracker(() => {
   const subscription1 = Tools.subscribe();
