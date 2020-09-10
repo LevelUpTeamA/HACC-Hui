@@ -22,6 +22,8 @@ import { Teams } from '../../api/team/TeamCollection';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
 import { Skills } from '../../api/skill/SkillCollection';
 import { Tools } from '../../api/tool/ToolCollection';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { Developers } from '../../api/user/DeveloperCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -58,16 +60,33 @@ class TeamCreation extends React.Component {
     console.log('CreateTeam.submit', data);
 
     const {
-      teamName, description, gitHubRepo = '', devPostPage = '',
-      // eslint-disable-next-line no-unused-vars
-      owner, open = true, challenges, skills, tools, developers = [],
+      teamName, description, owner, open, challenges, skills, tools,
     } = data;
 
-    const docID = Teams.define({
-      teamName, description, open, owner, gitHubRepo,
-      devPostPage, challenges, tools, skills,
-    });
+    const definitionData = {
+      teamName,
+      description,
+      owner,
+      open,
+      challenges,
+      skills,
+      tools,
+    };
 
+    if (/^[a-zA-Z0-9-]*$/.test(teamName) === false) {
+      swal('Error', 'Sorry, no special characters or space allowed.', 'error');
+      return;
+    }
+
+    defineMethod.call({
+      collectionName: Teams.getCollectionName(), data: definitionData }, (error) => {
+      if (error) {
+        swal('Error', error.message, 'error');
+      } else {
+        swal('Success', 'Item added successfully', 'success');
+        formRef.reset();
+      }
+    });
     // const docID = Teams.define({
     //     teamName, description, gitHubRepo, devPostPage,
     //     owner, open, challenges, skills, tools, developers,
@@ -82,7 +101,7 @@ class TeamCreation extends React.Component {
     //          console.log('Success');
     //       }
     //     });
-    console.log(docID);
+   // console.log(docID);
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
@@ -153,6 +172,8 @@ TeamCreation.propTypes = {
   challenges: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
+  developers: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
 
 };
 
@@ -160,10 +181,14 @@ export default withTracker(() => {
   const subscriptionChallenges = Challenges.subscribe();
   const subscriptionSkills = Skills.subscribe();
   const subscriptionTools = Tools.subscribe();
+  const subscriptionDevelopers = Developers.subscribe();
+
   return {
     challenges: Challenges.find({}).fetch(),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
-    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready(),
+    developers: Developers.find({}).fetch(),
+    // eslint-disable-next-line max-len
+    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready() && subscriptionDevelopers,
   };
 })(TeamCreation);
