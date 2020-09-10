@@ -85,8 +85,8 @@ class UpdateProfile extends React.Component {
    */
   submit(data, formRef) {
 
-    const { challenges, skills, tools, linkedIn, gitHub, website, aboutMe } = data;
-    const definitionData = { challenges, skills, tools, linkedIn, gitHub, website, aboutMe };
+    const { challenges, skills, tools, linkedIn, gitHub, website, aboutMe, _id } = data;
+    const definitionData = { _id, challenges, skills, tools, linkedIn, gitHub, website, aboutMe };
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     updateMethod.call( { collectionName: Developers.getCollectionName(), definitionData: definitionData },
       (error) => {
