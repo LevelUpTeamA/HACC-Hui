@@ -28,26 +28,7 @@ import { Tools } from '../../api/tool/ToolCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
-  username: {
-    type: String,
-    label: 'Username',
-  },
-  first: {
-    type: String,
-    label: 'First Name',
-  },
-  last: {
-    type: String,
-    label: 'Last Name',
-  },
-  demographicLevel: {
-    type: String,
-    label: 'Demographic Level',
-  },
-  lookingTeam: {
-    type: Boolean,
-    label: 'Looking for a team?',
-  },
+
   skills: {
     type: Array,
     label: 'Skills',
@@ -69,12 +50,12 @@ const schema = new SimpleSchema({
   'challenges.$': {
     type: String,
   },
-  linkedin: {
+  linkedIn: {
     type: String,
     label: 'LinkedIn',
     optional: true,
   },
-  github: {
+  gitHub: {
     type: String,
     label: 'GitHub',
     optional: true,
@@ -104,11 +85,8 @@ class UpdateProfile extends React.Component {
    */
   submit(data, formRef) {
 
-    const { username, first, last, demographicLevel, lookingTeam, linkedin, github, website, aboutMe,
-      challenges, skills, tools } = data;
-    const definitionData = {
-      username, first, last, demographicLevel, lookingTeam, linkedin, github, website, aboutMe, challenges, skills, tools
-    };
+    const { challenges, skills, tools, linkedIn, gitHub, website, aboutMe } = data;
+    const definitionData = { challenges, skills, tools, linkedIn, gitHub, website, aboutMe };
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     updateMethod.call( { collectionName: Developers.getCollectionName(), definitionData: definitionData },
       (error) => {
@@ -137,23 +115,16 @@ class UpdateProfile extends React.Component {
             <Header as="h2" textAlign="center" inverted>Update Your Profile</Header>
             <AutoForm ref={ref => { fRef = ref; }} schema={formSchema} onSubmit={data => this.submit(data, fRef)} >
               <Segment>
-                <Form.Group widths={'equal'}>
-                  <TextField name='first' placeholer={'First Name'}/>
-                  <TextField name='last' placeholer={'Last Name'}/>
-                </Form.Group>
-                <TextField name='username' placeholer={'Username'}/>
-                <TextField name='demographicLevel'/>
                 <MultiSelectField name='skills' placeholder={'Skills'}
                                   allowedValues={skillsArr} required/>
                 <MultiSelectField name='tools' placeholder={'Tools'}
                                   allowedValues={toolsArr} required/>
                 <MultiSelectField name='challenges' placeholder={'Challenges'}
                                   allowedValues={challengesArr} required/>
-                <TextField name='linkedin' placeholer={'LinkedIn URL'}/>
-                <TextField name='github' placeholer={'GitHub URL'}/>
+                <TextField name='linkedIn' placeholer={'LinkedIn URL'}/>
+                <TextField name='gitHub' placeholer={'GitHub URL'}/>
                 <TextField name='website' placeholer={'Website URL'}/>
                 <LongTextField name='aboutMe'/>
-                <BoolField name='lookingTeam'/>
                 <SubmitField value='Submit'/>
                 <ErrorsField/>
               </Segment>
