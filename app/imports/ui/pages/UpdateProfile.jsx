@@ -17,10 +17,22 @@ import MultiSelectField from '../forms/MultiSelectField';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { stuffDefineMethod } from '../../api/stuff/StuffCollection.methods';
-import {Skills} from '../../api/skill/SkillCollection';
+//import { Developers } from '../../api/user/DeveloperCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
+  first: {
+    type: String,
+    label: 'First Name',
+  },
+  last: {
+    type: String,
+    label: 'Last Name',
+  },
+  username: {
+    type: String,
+    label: 'Username',
+  },
   skills: {
     type: Array,
     label: 'Skills',
@@ -48,18 +60,23 @@ const schema = new SimpleSchema({
   linkedin: {
     type: String,
     label: 'LinkedIn',
+    optional: true,
   },
   github: {
     type: String,
     label: 'GitHub',
+    optional: true,
   },
   website: {
     type: String,
     label: 'Website',
+    optional: true,
+
   },
   aboutMe: {
     type: String,
     label: 'About Me',
+    optional: true,
   },
 });
 
@@ -75,10 +92,10 @@ class UpdateProfile extends React.Component {
    */
   submit(data, formRef) {
     // console.log('AddStuff.submit', data);
-    const { skills, tools, challenges, linkedin, github, website, aboutMe} = data;
+    const { first, last, username, skills, tools, challenges, linkedin, github, website, aboutMe} = data;
     const owner = Meteor.user().username;
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
-    stuffDefineMethod.call({ skills, tools, challenges, linkedin, github, website, aboutMe },
+    stuffDefineMethod.call({ first, last, username, skills, tools, challenges, linkedin, github, website, aboutMe },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
@@ -102,6 +119,9 @@ class UpdateProfile extends React.Component {
             <Header as="h2" textAlign="center" inverted>Update Your Profile</Header>
             <AutoForm ref={ref => { fRef = ref; }} schema={formSchema} onSubmit={data => this.submit(data, fRef)} >
               <Segment>
+                <TextField name='first' placeholer={'First Name'}/>
+                <TextField name='last' placeholer={'Last Name'}/>
+                <TextField name='username' placeholer={'Username'}/>
                 <MultiSelectField name='skills' placeholder={'Skills'} required/>
                 <MultiSelectField name='tools' placeholder={'Tools'} required/>
                 <MultiSelectField name='challenges' placeholder={'Challenges'} required/>
