@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Segment, Header, Icon } from 'semantic-ui-react';
-import { AutoForm, ErrorsField, LongTextField, SelectField, SubmitField } from 'uniforms-semantic';
+import { Grid, Segment, Header } from 'semantic-ui-react';
+import { AutoForm, ErrorsField, LongTextField, SelectField } from 'uniforms-semantic';
 import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
@@ -127,7 +127,6 @@ class DeleteForm extends React.Component {
 DeleteForm.propTypes = {
   doc: PropTypes.object,
   model: PropTypes.object,
-  ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
