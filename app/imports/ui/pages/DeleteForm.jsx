@@ -10,11 +10,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import swal from 'sweetalert';
 import { Developers } from '../../api/user/DeveloperCollection';
-import {
-  userInteractionDefineMethod,
-  userInteractionRemoveUserMethod,
-} from '../../api/user/UserInteractionCollection.methods';
 import { removeItMethod } from '../../api/base/BaseCollection.methods';
+import { userInteractionDefineMethod } from '../../api/user/UserInteractionCollection.methods';
 import { userInteractionTypes } from '../../api/user/UserInteractionCollection';
 
 /**
@@ -50,7 +47,6 @@ class DeleteForm extends React.Component {
     ));
     const id = this.props.doc._id;
     console.log(id);
-    userInteractionRemoveUserMethod.call({ username: username });
     removeItMethod.call({ collectionName: Developers.getCollectionName(), instance: Developers.getID(id) });
   }
 
