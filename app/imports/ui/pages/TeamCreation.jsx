@@ -1,15 +1,15 @@
 import React from 'react';
-import { Grid, Segment, Header, Divider } from 'semantic-ui-react';
+import { Grid, Segment, Header, Divider, Loader } from 'semantic-ui-react';
 import {
   AutoForm,
   ErrorsField,
   SubmitField,
   TextField,
   LongTextField,
-  HiddenField,
 } from 'uniforms-semantic';
 // eslint-disable-next-line no-unused-vars
 import swal from 'sweetalert';
+// eslint-disable-next-line no-unused-vars
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
@@ -22,14 +22,17 @@ import { Teams } from '../../api/team/TeamCollection';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
 import { Skills } from '../../api/skill/SkillCollection';
 import { Tools } from '../../api/tool/ToolCollection';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { Developers } from '../../api/user/DeveloperCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
-  availability: {
+  open: {
     type: String,
     allowedValues: ['Open', 'Close'],
+    label: 'Availability',
   },
-  teamName: String,
+  name: String,
   image: String,
   challenges: { type: Array, label: 'Challenges' },
   'challenges.$': { type: String },
@@ -38,7 +41,6 @@ const schema = new SimpleSchema({
   tools: { type: Array, label: 'Toolsets' },
   'tools.$': { type: String },
   description: String,
-  owner: String,
 });
 
 /**
@@ -52,44 +54,95 @@ class TeamCreation extends React.Component {
    * @param formRef {FormRef} reference to the form.
    */
   // eslint-disable-next-line no-unused-vars
-  submit(data, formRef) {
+  submit(definitionData, formRef) {
 
-    // eslint-disable-next-line no-console
-    console.log('CreateTeam.submit', data);
+    console.log('CreateTeam.submit', definitionData);
+    const skillsArr = this.props.skills;
+    const skillsObj = [];
 
-    const {
-      teamName, description, gitHubRepo = '', devPostPage = '',
-      // eslint-disable-next-line no-unused-vars
-      owner, open = true, challenges, skills, tools, developers = [],
-    } = data;
+    const toolsArr = this.props.tools;
+    const toolsObj = [];
 
-    const docID = Teams.define({
-      teamName, description, open, owner, gitHubRepo,
-      devPostPage, challenges, tools, skills,
+    const challengesArr = this.props.challenges;
+    const challengesObj = [];
+
+    const owner = this.props.developers[0].slugID;
+
+    let {
+      name, description, open, challenges, skills, tools, image,
+    } = definitionData;
+
+    if (open === 'Yes') {
+      open = true;
+    } else {
+      open = false;
+      console.log('FALSE');
+    }
+
+    for (let i = 0; i < skillsArr.length; i++) {
+      for (let j = 0; j < skills.length; j++) {
+        if (skillsArr[i].name === skills[j]) {
+          skillsObj.push(skillsArr[i].slugID);
+        }
+      }
+    }
+
+    for (let i = 0; i < toolsArr.length; i++) {
+      for (let j = 0; j < tools.length; j++) {
+        if (toolsArr[i].name === tools[j]) {
+          toolsObj.push(toolsArr[i].slugID);
+        }
+      }
+    }
+
+    for (let i = 0; i < challengesArr.length; i++) {
+      for (let j = 0; j < challenges.length; j++) {
+        if (challengesArr[i].name === tools[j]) {
+          challengesObj.push(challengesArr[i].slugID);
+        }
+      }
+    }
+
+    // If the name has special character or space, throw a swal error and return early.
+    if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
+      swal('Error', 'Sorry, no special characters or space allowed.', 'error');
+      return;
+    }
+    defineMethod.call({
+          collectionName: Teams.getCollectionName(),
+          definitionData: {
+            name,
+            description,
+            owner,
+            open,
+            image,
+            challengesObj,
+            skillsObj,
+            toolsObj,
+          },
+    },
+        (error) => {
+      if (error) {
+        swal('Error', error.message, 'error');
+       // console.error(error.message);
+      } else {
+        swal('Success', 'Item added successfully', 'success');
+        formRef.reset();
+     //   console.log('Success');
+      }
     });
-
-    // const docID = Teams.define({
-    //     teamName, description, gitHubRepo, devPostPage,
-    //     owner, open, challenges, skills, tools, developers,
-    //   },
-    //     (error) => {
-    //       if (error) {
-    //         swal('Error', error.message, 'error');
-    //          console.error(error.message);
-    //       } else {
-    //         swal('Success', 'Item added successfully', 'success');
-    //         formRef.reset();
-    //          console.log('Success');
-    //       }
-    //     });
-    console.log(docID);
+   // console.log(docID);
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
+    console.log(Teams.dumpAll());
+    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+  }
+
+  renderPage() {
     let fRef = null;
     const formSchema = new SimpleSchema2Bridge(schema);
-
     const challengeArr = _.map(this.props.challenges, 'title');
     const skillArr = _.map(this.props.skills, 'name');
     const toolArr = _.map(this.props.tools, 'name');
@@ -112,9 +165,9 @@ class TeamCreation extends React.Component {
                     <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                       <Header as="h2" textAlign="center" inverted>Team Information</Header>
                       <Grid className='doubleLine'>
-                        <TextField name='teamName'/>
+                        <TextField name='name'/>
                         <RadioField
-                            name='availability'
+                            name='open'
                             inline
                         >
                         </RadioField>
@@ -136,10 +189,6 @@ class TeamCreation extends React.Component {
                                    margin: '20px 0px',
                                  }}/>
                   </div>
-                  <HiddenField
-                      name='owner'
-                      value={Meteor.user().username}
-                  />
                   <ErrorsField/>
                 </Segment>
               </AutoForm>
@@ -153,6 +202,8 @@ TeamCreation.propTypes = {
   challenges: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
+  developers: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
 
 };
 
@@ -160,10 +211,14 @@ export default withTracker(() => {
   const subscriptionChallenges = Challenges.subscribe();
   const subscriptionSkills = Skills.subscribe();
   const subscriptionTools = Tools.subscribe();
+  const subscriptionDevelopers = Developers.subscribe();
+
   return {
     challenges: Challenges.find({}).fetch(),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
-    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready(),
+    developers: Developers.find({}).fetch(),
+    // eslint-disable-next-line max-len
+    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready() && subscriptionDevelopers,
   };
 })(TeamCreation);
