@@ -13,6 +13,7 @@ import { Developers } from '../../api/user/DeveloperCollection';
 import { removeItMethod } from '../../api/base/BaseCollection.methods';
 import { userInteractionDefineMethod } from '../../api/user/UserInteractionCollection.methods';
 import { userInteractionTypes } from '../../api/user/UserInteractionCollection';
+import { deleteAccount } from '../../startup/methods/DeleteAccount';
 
 /**
  * Renders the Page for deleting a user. **deprecated**
@@ -25,7 +26,6 @@ class DeleteForm extends React.Component {
    * @param formRef {FormRef} reference to the form.
    */
   submit(data) {
-    console.log('DeleteForm.submit', data);
     const username = this.props.doc.username;
     const type = userInteractionTypes.deleteAccount;
     const typeData = [data.feedback, data.other];
@@ -46,13 +46,15 @@ class DeleteForm extends React.Component {
                 })
     ));
     const id = this.props.doc._id;
-    console.log(id);
     removeItMethod.call({ collectionName: Developers.getCollectionName(), instance: Developers.getID(id) });
+    Meteor.call(deleteAccount,
+        (error) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+          }
+        });
   }
 
-  // const instance = this.props.doc._id;
-  // removeItMethod.call({ Developers, instance });
-  // userInteractionRemoveUserMethod.call({ Developers, username });
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
     const reasons = [
