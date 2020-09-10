@@ -7,6 +7,14 @@ import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
+import ListStuff from '../pages/ListStuff';
+import AdminConfiguration from '../pages/AdminConfiguration';
+import AddChallenge from '../pages/AddChallenges';
+import AddSkill from '../pages/AddSkills';
+import AddTool from '../pages/AddTools';
+import EditChallenges from '../pages/EditChallenges';
+import EditSkills from '../pages/EditSkills';
+import EditTools from '../pages/EditTools';
 import TeamCreation from '../pages/TeamCreation';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddStuff from '../pages/AddStuff';
@@ -36,6 +44,14 @@ class App extends React.Component {
               <ProtectedRoute path="/add" component={AddStuff}/>
               <ProtectedRoute path="/delete" component={DeleteForm}/>
               <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
+              <ProtectedRoute path="/list" component={ListStuff}/>
+              <ProtectedRoute path="/addChallenge" component={AddChallenge}/>
+              <ProtectedRoute path="/addSkill" component={AddSkill}/>
+              <ProtectedRoute path="/addTool" component={AddTool}/>
+              <ProtectedRoute path="/editChallenges/:_id" component={EditChallenges}/>
+              <ProtectedRoute path="/editSkills/:_id" component={EditSkills}/>
+              <ProtectedRoute path="/editTools/:_id" component={EditTools}/>
+              <AdminProtectedRoute path="/admin" component={AdminConfiguration}/>
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/>
               <ProtectedRoute path="/signout" component={Signout}/>
               <Route component={NotFound}/>
