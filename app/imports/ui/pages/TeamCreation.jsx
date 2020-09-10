@@ -8,6 +8,7 @@ import {
   LongTextField,
   HiddenField,
 } from 'uniforms-semantic';
+// eslint-disable-next-line no-unused-vars
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -44,18 +45,20 @@ class TeamCreation extends React.Component {
    * @param data {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
+  // eslint-disable-next-line no-unused-vars
   submit(data, formRef) {
 
     console.log('CreateTeam.submit', data);
 
     const {
       teamName, description, gitHubRepo = '', devPostPage = '',
-      owner, open = true, challenges, skills, tools, developers = []
+      // eslint-disable-next-line no-unused-vars
+      owner, open = true, challenges, skills, tools, developers = [],
     } = data;
 
     const docID = Teams.define({
       teamName, description, open, owner, gitHubRepo,
-      devPostPage, challenges, tools, skills
+      devPostPage, challenges, tools, skills,
     });
 
     // const docID = Teams.define({
@@ -87,14 +90,14 @@ class TeamCreation extends React.Component {
                 fRef = ref;
               }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
                         style={{
-                          paddingBottom: '4rem',
+                          paddingBottom: '40px',
                         }}>
                 <Segment style={{
-                  borderRadius: '1rem',
+                  borderRadius: '10px',
                   backgroundColor: '#5C93D1',
                 }} className={'createTeam'}>
-                  <Grid columns={1} style={{ paddingTop: '2rem' }}>
-                    <Grid.Column style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+                  <Grid columns={1} style={{ paddingTop: '20px' }}>
+                    <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                       <Header as="h2" textAlign="center" inverted>Team Information</Header>
                       <Grid className='doubleLine'>
                         <TextField name='teamName'/>
@@ -115,7 +118,7 @@ class TeamCreation extends React.Component {
                     <SubmitField value='Submit'
                                  style={{
                                    color: 'white', backgroundColor: '#dd000a',
-                                   margin: '2rem 0rem',
+                                   margin: '20px 0px',
                                  }}/>
                   </div>
                   <HiddenField
