@@ -18,6 +18,7 @@ import MultiSelectField from '../forms/MultiSelectField';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { stuffDefineMethod } from '../../api/stuff/StuffCollection.methods';
+import { _ } from 'lodash';
 import { Developers } from '../../api/user/DeveloperCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { getCollectionName } from '../../api/base/BaseCollection';
@@ -45,7 +46,6 @@ const schema = new SimpleSchema({
   },
   'skills.$': {
     type: String,
-    allowedValues: ['Videography', 'User Interface Design', 'Database Management'],
   },
   tools: {
     type: Array,
@@ -53,7 +53,6 @@ const schema = new SimpleSchema({
   },
   'tools.$': {
     type: String,
-    allowedValues: ['JavaScript', 'Python', 'Java', 'C#', 'C', 'C++', 'Ruby']
   },
   challenges: {
     type: Array,
@@ -61,7 +60,6 @@ const schema = new SimpleSchema({
   },
   'challenges.$': {
     type: String,
-    allowedValues: ['Sustainability', 'Green Energy']
   },
   linkedin: {
     type: String,
@@ -120,7 +118,7 @@ class UpdateProfile extends React.Component {
   render() {
     const skillsArr = _.map(this.props.skills, 'name');
     const toolsArr = _.map(this.props.tools, 'name');
-    const challengesArr = _.map(this.props.challenges, 'name');
+    const challengesArr = _.map(this.props.challenges, 'title');
     let fRef = null;
     const formSchema = new SimpleSchema2Bridge(schema);
     const menuStyle = {marginTop: '2em', backgroundColor: '#5C93D1' };
