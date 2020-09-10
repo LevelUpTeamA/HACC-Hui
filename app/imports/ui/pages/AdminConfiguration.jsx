@@ -10,6 +10,9 @@ import { Tools } from '../../api/tool/ToolCollection';
 import ChallengesAdmin from '../components/ChallengesAdmin';
 import SkillsAdmin from '../components/SkillsAdmin';
 import ToolsAdmin from '../components/ToolsAdmin';
+import AddChallengeButton from '../components/AddChallengeButton';
+import AddSkillButton from '../components/AddSkillButton';
+import AddToolButton from '../components/AddToolButton';
 
 /**
  * **Deprecated**
@@ -37,9 +40,9 @@ class AdminConfiguration extends React.Component {
 
     return (
         <div style={{paddingLeft:'5%', paddingRight:'5%', }}>
-          <div style={{ display: 'flex', flexDirection: 'row', margin: 15, justifyContent: 'center', alignItems: 'stretch' }}>
-            <b style={{ fontSize: 30 }}>Challenges</b>
-          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', margin: 20, justifyContent: 'center', alignItems: 'stretch' }}>
+            <b style={{ fontSize: 30,}}>Challenges     <AddChallengeButton/></b>
+            </div>
           <div style = {{overflow: 'auto', height: '500px',}}>
             <Table celled style={tableStyle}>
               <Table.Header>
@@ -63,8 +66,8 @@ class AdminConfiguration extends React.Component {
             </Table>
           </div>
 
-          <Grid style={{ flexDirection: 'row', margin: 15, justifyContent: 'center', alignItems: 'stretch' }}>
-            <b style={{ fontSize: 30 }}>Skills</b>
+          <Grid style={{ flexDirection: 'row', margin: 20, justifyContent: 'center', alignItems: 'stretch' }}>
+            <b style={{ fontSize: 30 }}>Skills     <AddSkillButton/></b>
           </Grid>
           <div style = {{overflow: 'auto', height: '300px',}}>
             <Table celled>
@@ -80,8 +83,8 @@ class AdminConfiguration extends React.Component {
             </Table>
           </div>
 
-          <Grid style={{ flexDirection: 'row', margin: 15, justifyContent: 'center', alignItems: 'stretch' }}>
-            <b style={{ fontSize: 30 }}>Tools</b>
+          <Grid style={{ flexDirection: 'row', margin: 20, justifyContent: 'center', alignItems: 'stretch' }}>
+            <b style={{ fontSize: 30 }}>Tools     <AddToolButton/></b>
           </Grid>
           <div style = {{overflow: 'auto', height: '300px',}}>
             <Table celled>
