@@ -136,21 +136,18 @@ class UpdateProfile extends React.Component {
 }
 
 UpdateProfile.propTypes = {
-  doc: PropTypes.object,
   tools: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   challenges: PropTypes.array.isRequired,
   developer: PropTypes.array.isRequired,
 };
 
-export default withTracker(({ match }) => {
-  const documentId = match.params._id;
+export default withTracker(() => {
   const subscription1 = Tools.subscribe();
   const subscription = Skills.subscribe();
   const subscription2 = Challenges.subscribe();
   const subscription3 = Developers.subscribe();
   return {
-    doc: Developers.findOne(documentId),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
     challenges: Challenges.find({}).fetch(),
