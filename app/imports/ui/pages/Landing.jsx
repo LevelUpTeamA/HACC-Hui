@@ -16,7 +16,7 @@ class Landing extends React.Component {
             }}>
               <b style={{
                 color: '#0B2C52', fontSize: 30, alignSelf: 'flex-start',
-                paddingLeft: 20, marginBottom: 15
+                paddingLeft: 20, marginBottom: 15,
               }}>Welcome to HACC-Hui</b>
                   <p style={{ fontSize: 20, paddingLeft: 20, color: '#0B2C52' }}>
                     Our goal is to simplify team formation and ongoing team management

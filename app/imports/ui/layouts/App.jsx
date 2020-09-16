@@ -26,6 +26,17 @@ import AddStuff from '../pages/AddStuff';
 import UpdateProfile from '../pages/UpdateProfile';
 import withAllSubscriptions from './AllSubscriptionsHOC';
 import { ROLE } from '../../api/role/Role';
+import AgePage from '../pages/developer/AgePage';
+import ParticipationForm from '../pages/developer/ParticipationForm';
+import UnderParticipationForm from '../pages/developer/UnderParticipationForm';
+import Dprofile from '../pages/developer/Dprofile';
+import TeamCreation from '../pages/developer/TeamCreation';
+import { ROUTES } from '../../startup/client/route-constants';
+import DeleteForm from '../pages/developer/DeleteForm';
+import ConfigureHACC from '../pages/administrator/ConfigureHACC';
+import AddChallenge from '../pages/administrator/AddChallenge';
+import AddSkill from '../pages/administrator/AddSkill';
+import AddTool from '../pages/administrator/AddTool';
 
 /**
  * Top-level layout component for this application. Called in imports/startup/client/startup.jsx.
@@ -35,31 +46,29 @@ class App extends React.Component {
   render() {
     return (
         <Router>
-          <div style={{ height: '100%' }}>
-            <NavBar/>
+          <div>
+            <NavBar />
             <Switch>
-              <Route exact path="/" component={Landing}/>
-              <Route path="/signin" component={Signin}/>
-              <ProtectedRoute path="/team" component={TeamCreation}/>
-              <ProtectedRoute path="/add" component={AddStuff}/>
-              <ProtectedRoute path="/delete" component={DeleteForm}/>
-              <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
-              <ProtectedRoute path="/list" component={ListStuff}/>
-              <ProtectedRoute path="/list" component={ListStuff}/>
-              <ProtectedRoute path="/add" component={AddStuff}/>
-              <ProtectedRoute path="/update" component={UpdateProfile}/>
-              <ProtectedRoute path="/edit/:_id" component={EditStuff}/>
-              <ProtectedRoute path="/addChallenge" component={AddChallenge}/>
-              <ProtectedRoute path="/addSkill" component={AddSkill}/>
-              <ProtectedRoute path="/addTool" component={AddTool}/>
-              <ProtectedRoute path="/editChallenges/:_id" component={EditChallenges}/>
-              <ProtectedRoute path="/editSkills/:_id" component={EditSkills}/>
-              <ProtectedRoute path="/editTools/:_id" component={EditTools}/>
-              <AdminProtectedRoute path="/admin" component={AdminConfiguration}/>
-              <ProtectedRoute path="/signout" component={Signout}/>
-              <Route component={NotFound}/>
+              <Route exact path={ROUTES.LANDING} component={Landing} />
+              <Route path={ROUTES.SIGN_IN} component={Signin} />
+              <ProtectedRoute path={ROUTES.AGE_CONSENT} component={AgePage} />
+              <ProtectedRoute path={ROUTES.PARTICIPATION} component={ParticipationForm} />
+              <ProtectedRoute path={ROUTES.UNDERAGE_PARTICIPATION} component={UnderParticipationForm} />
+              <ProtectedRoute path={ROUTES.CREATE_PROFILE} component={Dprofile} />
+              <ProtectedRoute path={ROUTES.CREATE_TEAM} component={TeamCreation} />
+              <ProtectedRoute path={ROUTES.DELETE_ACCOUNT} component={DeleteForm} />
+              <ProtectedRoute path="/list" component={ListStuff} />
+              <ProtectedRoute path="/add" component={AddStuff} />
+              <ProtectedRoute path="/edit/:_id" component={EditStuff} />
+              <AdminProtectedRoute path="/admin" component={ListStuffAdmin} />
+              <AdminProtectedRoute path={ROUTES.CONFIGURE_HACC} component={ConfigureHACC} />
+              <AdminProtectedRoute path={ROUTES.ADD_CHALLENGE} component={AddChallenge} />
+              <AdminProtectedRoute path={ROUTES.ADD_SKILL} component={AddSkill} />
+              <AdminProtectedRoute path={ROUTES.ADD_TOOL} component={AddTool} />
+              <ProtectedRoute path={ROUTES.SIGN_OUT} component={Signout} />
+              <Route component={NotFound} />
             </Switch>
-            <Footer/>
+            <Footer />
           </div>
         </Router>
     );
@@ -81,7 +90,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             const isLogged = Meteor.userId() !== null;
             return isLogged ?
                 (<WrappedComponent {...props} />) :
-                (<Redirect to={{ pathname: '/signin', state: { from: props.location } }}/>
+                (<Redirect to={{ pathname: '/signin', state: { from: props.location } }} />
                 );
           }}
       />
@@ -104,7 +113,7 @@ const AdminProtectedRoute = ({ component: Component, ...rest }) => {
             const isAdmin = Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN);
             return (isLogged && isAdmin) ?
                 (<WrappedComponent {...props} />) :
-                (<Redirect to={{ pathname: '/signin', state: { from: props.location } }}/>
+                (<Redirect to={{ pathname: '/signin', state: { from: props.location } }} />
                 );
           }}
       />
