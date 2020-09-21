@@ -7,7 +7,7 @@ import _ from 'lodash';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, BoolField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-semantic';
-import Swal from 'sweetalert2';
+// import swal from 'sweetalert';
 import { Developers } from '../../../api/user/DeveloperCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
