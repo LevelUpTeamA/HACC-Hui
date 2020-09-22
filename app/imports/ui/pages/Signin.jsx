@@ -47,7 +47,6 @@ class Signin extends React.Component {
 
   // Render the signin form.
   render() {
-    console.log(this.state);
     let pathname = ROUTES.LANDING;
     if (Developers.isDefined(Meteor.userId())) {
       const dev = Developers.findDoc({ userID: Meteor.userId() });
