@@ -4,10 +4,10 @@ import { Developers } from '../user/DeveloperCollection';
 import { Teams } from './TeamCollection';
 import { ROLE } from '../role/Role';
 
-class InterestedDevsCollection extends BaseCollection {
+class InterestedDevCollection extends BaseCollection {
 
   constructor() {
-    super('InterestedDevs', new SimpleSchema({
+    super('InterestedDev', new SimpleSchema({
       teamID: { type: SimpleSchema.RegEx.Id },
       developerID: { type: SimpleSchema.RegEx.Id },
     }));
@@ -78,4 +78,4 @@ class InterestedDevsCollection extends BaseCollection {
 
 }
 
-export const InterestedDevs = new InterestedDevsCollection();
+export const InterestedDevs = new InterestedDevCollection();
