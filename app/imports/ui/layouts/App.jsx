@@ -27,11 +27,13 @@ import UnderParticipationForm from '../pages/developer/UnderParticipationForm';
 import Dprofile from '../pages/developer/Dprofile';
 import { ROUTES } from '../../startup/client/route-constants';
 import ConfigureHACC from '../pages/administrator/ConfigureHACC';
+import TeamCreation from '../pages/developer/TeamCreation';
 import AddChallenge from '../pages/administrator/AddChallenge';
 import AddSkill from '../pages/administrator/AddSkill';
 import AddTool from '../pages/administrator/AddTool';
 import DumpDatabase from '../pages/administrator/DumpDatabase';
 import EditProfilePage from '../pages/developer/EditProfilePage';
+import DeleteForm from '../pages/developer/DeleteForm';
 import ListTeamsPage from '../pages/developer/ListTeamsPage';
 
 /**
