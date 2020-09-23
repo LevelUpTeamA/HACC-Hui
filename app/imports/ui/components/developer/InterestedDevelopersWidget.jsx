@@ -1,14 +1,20 @@
 import React from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import { _ } from 'lodash';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Grid, Header } from 'semantic-ui-react';
-import { Teams } from '../../../api/team/TeamCollection';
+import { InterestedDevs } from '../../../api/team/InterestedDevCollection';
+import { Developers } from '../../../api/user/DeveloperCollection';
+import { DeveloperChallenges } from '../../../api/user/DeveloperChallengeCollection';
+import { DeveloperSkills } from '../../../api/user/DeveloperSkillCollection';
+import { DeveloperTools } from '../../../api/user/DeveloperToolCollection';
 import InterestedDeveloperExampleWidget from './InterestedDeveloperExampleWidget';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
+import { Teams } from '../../../api/team/TeamCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 
 const getTeamChallenges = (team) => {
@@ -36,26 +42,29 @@ class InterestedDevelopersWidget extends React.Component {
   render() {
     return (
         <Grid celled>
-          <Grid.Row columns={4}>
+          <Grid.Row columns={6}>
             <Grid.Column>
               <Header>Name</Header>
+            </Grid.Column>
+            <Grid.Column>
+              <Header>Slack Username</Header>
             </Grid.Column>
             <Grid.Column>
               <Header>Challenges</Header>
             </Grid.Column>
             <Grid.Column>
-              <Header>Desired Skills</Header>
+              <Header>Skills</Header>
             </Grid.Column>
             <Grid.Column>
-              <Header>Desired Tools</Header>
+              <Header>Tools</Header>
             </Grid.Column>
           </Grid.Row>
-          {this.props.teams.map((team) => (
-              <InterestedDeveloperExampleWidget key={team._id}
-                                                team={team}
-                                                teamChallenges={getTeamChallenges(team)}
-                                                teamSkills={getTeamSkills(team)}
-                                                teamTools={getTeamTools(team)}
+          {this.props.interestedDevs.map((dev) => (
+              <InterestedDeveloperExampleWidget key={dev._id}
+                                                team={dev}
+                                                teamChallenges={getTeamChallenges(dev)}
+                                                teamSkills={getTeamSkills(dev)}
+                                                teamTools={getTeamTools(dev)}
               />
           ))}
         </Grid>
@@ -64,14 +73,30 @@ class InterestedDevelopersWidget extends React.Component {
 }
 
 InterestedDevelopersWidget.propTypes = {
-  teams: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
+  developerChallenges: PropTypes.array.isRequired,
+  interestedDevs: PropTypes.array.isRequired,
+  developerSkills: PropTypes.array.isRequired,
+  skills: PropTypes.array.isRequired,
+  developerTools: PropTypes.array.isRequired,
+  teams: PropTypes.array.isRequired,
+  challenges: PropTypes.array.isRequired,
+  developers: PropTypes.array.isRequired,
+  tools: PropTypes.array.isRequired,
 };
 
-export default withTracker(() => {
-  const teams = Teams.find({}).fetch();
+export default withTracker(({ match }) => {
+  const documentId = match.params._id;
   return {
-    teams,
+    // eslint-disable-next-line max-len
+    developers: Developers.find({}).fetch(),
+    developerChallenges: DeveloperChallenges.find({}).fetch(),
+    developerSkills: DeveloperSkills.find({}).fetch(),
+    developerTools: DeveloperTools.find({}).fetch(),
+    // eslint-disable-next-line max-len
+    interestedDevs: InterestedDevs.find({ teamID: documentId }).fetch(),
+    teams: Teams.find({ _id: documentId }).fetch(),
+    skills: Skills.find({}).fetch(),
+    challenges: Challenges.find({}).fetch(),
+    tools: Tools.find({}).fetch(),
   };
 })(InterestedDevelopersWidget);
