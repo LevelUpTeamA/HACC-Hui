@@ -61,10 +61,10 @@ class InterestedDevelopersWidget extends React.Component {
           </Grid.Row>
           {this.props.interestedDevs.map((dev) => (
               <InterestedDeveloperExampleWidget key={dev._id}
-                                                team={dev}
-                                                teamChallenges={getTeamChallenges(dev)}
-                                                teamSkills={getTeamSkills(dev)}
-                                                teamTools={getTeamTools(dev)}
+                                                developers={dev}
+                                                challenges={getTeamChallenges(dev)}
+                                                skills={getTeamSkills(dev)}
+                                                tools={getTeamTools(dev)}
               />
           ))}
         </Grid>
@@ -78,14 +78,12 @@ InterestedDevelopersWidget.propTypes = {
   developerSkills: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   developerTools: PropTypes.array.isRequired,
-  teams: PropTypes.array.isRequired,
   challenges: PropTypes.array.isRequired,
   developers: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
 };
 
-export default withTracker(({ match }) => {
-  const documentId = match.params._id;
+export default withTracker(() => {
   return {
     // eslint-disable-next-line max-len
     developers: Developers.find({}).fetch(),
@@ -93,8 +91,8 @@ export default withTracker(({ match }) => {
     developerSkills: DeveloperSkills.find({}).fetch(),
     developerTools: DeveloperTools.find({}).fetch(),
     // eslint-disable-next-line max-len
-    interestedDevs: InterestedDevs.find({ teamID: documentId }).fetch(),
-    teams: Teams.find({ _id: documentId }).fetch(),
+    interestedDevs: InterestedDevs.find({}).fetch(),
+    // teams: Teams.find({ _id: documentId }).fetch(),
     skills: Skills.find({}).fetch(),
     challenges: Challenges.find({}).fetch(),
     tools: Tools.find({}).fetch(),
