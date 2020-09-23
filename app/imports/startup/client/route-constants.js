@@ -14,6 +14,7 @@ export const ROUTES = {
   EDIT_PROFILE: '/edit-profile',
   CREATE_TEAM: '/create-team',
   LIST_TEAMS: '/list-teams',
+  LIST_YOUR_TEAMS: '/list-your-teams',
   DELETE_ACCOUNT: '/delete-account',
   CONFIGURE_HACC: '/configure-hacc',
   ADD_CHALLENGE: '/add-challenge',
