@@ -29,6 +29,7 @@ import TeamCreation from '../pages/developer/TeamCreation';
 import { ROUTES } from '../../startup/client/route-constants';
 import DeleteForm from '../pages/developer/DeleteForm';
 import ConfigureHACC from '../pages/administrator/ConfigureHACC';
+import TeamFinder from '../pages/developer/TeamFinder';
 import AddChallenge from '../pages/administrator/AddChallenge';
 import AddSkill from '../pages/administrator/AddSkill';
 import AddTool from '../pages/administrator/AddTool';
@@ -60,6 +61,7 @@ class App extends React.Component {
               <ProtectedRoute path="/list" component={ListStuff} />
               <ProtectedRoute path="/add" component={AddStuff} />
               <ProtectedRoute path="/edit/:_id" component={EditStuff} />
+              <ProtectedRoute path={ROUTES.TEAM_FINDER} component = {TeamFinder}/>
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin} />
               <AdminProtectedRoute path={ROUTES.CONFIGURE_HACC} component={ConfigureHACC} />
               <AdminProtectedRoute path={ROUTES.ADD_CHALLENGE} component={AddChallenge} />

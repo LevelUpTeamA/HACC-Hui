@@ -20,4 +20,5 @@ export const ROUTES = {
   ADD_SKILL: '/add-skill',
   ADD_TOOL: '/add-tool',
   DUMP_DATABASE: '/dump-database',
+  TEAM_FINDER: '/team-finder',
 };
