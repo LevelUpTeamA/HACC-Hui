@@ -11,14 +11,13 @@ import SimpleSchema from 'simpl-schema';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
 import { Interests } from '../../api/interest/InterestCollection';
 import { updateMethod } from '../../api/base/BaseCollection.methods';
+import MultiSelectField from '../controllers/MultiSelectField';
 
 const editChallengeSchema = new SimpleSchema({
   title: { type: String },
   slugID: { type: SimpleSchema.RegEx.Id },
-  interest: {
-    type: String,
-  },
-  'interest.$': { type: String },
+  interests: { type: Array, label: 'Interests' },
+  'interests.$': { type: String },
   description: { type: String },
   submissionDetail: { type: String },
   pitch: { type: String },
@@ -35,14 +34,21 @@ class EditChallenges extends React.Component {
    */
   submit(data) {
     // console.log(data);
-    const { title, description, interest, submissionDetail, pitch, _id } = data;
-    const chosenInterest = Interests.findDoc(interest);
-    const interestIDs = [chosenInterest._id];
+    const { title, description, interests, submissionDetail, pitch, _id } = data;
+    const interestsArr = this.props.interests;
+    const interestsObj = [];
+    for (let i = 0; i < interestsArr.length; i++) {
+      for (let j = 0; j < interests.length; j++) {
+        if (interestsArr[i].name === interests[j]) {
+          interestsObj.push(interestsArr[i].slugID);
+        }
+      }
+    }
     const updateData = {
       _id,
       title,
       description,
-      interestIDs,
+      interestsObj,
       submissionDetail,
       pitch,
     };
@@ -58,7 +64,7 @@ class EditChallenges extends React.Component {
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   renderPage() {
-    const interestsArr = _.map(this.props.interest, 'name');
+    const interestsArr = _.map(this.props.interests, 'name');
     const formSchema = new SimpleSchema2Bridge(editChallengeSchema);
     return (
         <Grid container centered>
@@ -68,8 +74,7 @@ class EditChallenges extends React.Component {
               <Segment>
                 <TextField name='title'/>
                 <TextField name='description'/>
-                <SelectField name='interest' placeholder={'Interests'}
-                             allowedValues={interestsArr} required/>
+                <MultiSelectField name='interests' placeholder={'Interests'} allowedValues={interestsArr} required/>
                 <TextField name='submissionDetail'/>
                 <TextField name='pitch'/>
                 <SubmitField value='Submit'/>
@@ -85,7 +90,7 @@ class EditChallenges extends React.Component {
 /** Require the presence of a Stuff document in the props object. Uniforms adds 'model' to the props, which we use. */
 EditChallenges.propTypes = {
   doc: PropTypes.object,
-  interest: PropTypes.object,
+  interests: PropTypes.object,
   model: PropTypes.object,
   ready: PropTypes.bool.isRequired,
 };
@@ -98,7 +103,7 @@ export default withTracker(({ match }) => {
   const subscription = Challenges.subscribe();
   return {
     doc: Challenges.findOne(documentId),
-    interest: Interests.find({}).fetch(),
+    interests: Interests.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(EditChallenges);

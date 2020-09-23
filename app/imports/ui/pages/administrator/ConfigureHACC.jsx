@@ -35,9 +35,9 @@ class ConfigureHACC extends React.Component {
             <Grid.Row centered>
               <Grid.Column width={14} centered>
                 <Container style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
-                  <Header as="h2" style={{ flex: 'display', alignItems: 'center', justifyContent: 'center' }}>Challenges</Header>
+                  <Header as="h2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>Challenges</Header>
                   <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_CHALLENGE} key='addChallenge'
-                          size='small' style={{ marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>Add Challenge</Button>
+                          size='mini' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
                 </Container>
                 <Container>
                     {this.props.challenges.map((challenges => <ChallengeCard key={challenges._id} challenges={challenges} />))}
@@ -48,8 +48,8 @@ class ConfigureHACC extends React.Component {
               <Grid.Column width={14}>
                 <Container style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
                   <Header as="h2" style={{ flex: 'display', alignItems: 'center', justifyContent: 'center' }}>Skills</Header>
-                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_CHALLENGE} key='addChallenge'
-                          size='small' style={{ marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>Add Skill</Button>
+                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_SKILL} key='addChallenge'
+                          size='small' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
                 </Container>
 
                 <Container>
@@ -61,8 +61,8 @@ class ConfigureHACC extends React.Component {
               <Grid.Column width={14}>
                 <Container style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
                   <Header as="h2" style={{ flex: 'display', alignItems: 'center', justifyContent: 'center' }}>Tools</Header>
-                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_CHALLENGE} key='addChallenge'
-                          size='small' style={{ marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>Add Tool</Button>
+                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_TOOL} key='addChallenge'
+                          size='small' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
                 </Container>
 
                 <Container>
