@@ -32,12 +32,12 @@ class ChallengeCollection extends BaseSlugCollection {
    * @param pitch {string} the URL to the pitch.
    * @return {string} the id of the new challenge.
    */
-  define({ title, description, interests, submissionDetail, pitch }) {
+  define({ title, description, interestsObj, submissionDetail, pitch }) {
     const docs = this.find({ title, description, submissionDetail, pitch }).fetch();
     if (docs && docs.length > 0) {
       const challengeID = docs[0]._id;
       const cis = _.map(ChallengeInterests.find({ challengeID }).fetch(), (ci) => ci.interestID);
-      const interestIDs = Interests.getIDs(interests);
+      const interestIDs = Interests.getIDs(interestsObj);
       if (cis.length === interestIDs.length) {
         let same = true;
         _.forEach(cis, (ci) => {
@@ -56,7 +56,9 @@ class ChallengeCollection extends BaseSlugCollection {
     const challengeID = this._collection.insert({ title, slugID, description, submissionDetail, pitch });
     // Connect the Slug to this Challenge
     Slugs.updateEntityID(slugID, challengeID);
-    _.forEach(interests, (interest) => ChallengeInterests.define({ challenge, interest }));
+    _.forEach(interestsObj, (interest) => {
+      ChallengeInterests.define({ challenge, interest });
+    });
     return challengeID;
   }
 
@@ -69,7 +71,7 @@ class ChallengeCollection extends BaseSlugCollection {
    * @param submissionDetail {string} the new submission details, optional.
    * @param pitch {string} the new pitch URL, optional.
    */
-  update(docID, { title, description, interestIDs, submissionDetail, pitch }) {
+  update(docID, { title, description, interestObj, submissionDetail, pitch }) {
     this.assertDefined(docID);
     const updateData = {};
     if (title) {
@@ -85,14 +87,13 @@ class ChallengeCollection extends BaseSlugCollection {
       updateData.pitch = pitch;
     }
     this._collection.update(docID, { $set: updateData });
-    if (interestIDs && interestIDs.length > 0) {
+    if (interestObj && interestObj.length > 0) {
       const challengeName = this.findDoc(docID).title;
       // remove the old interests
       const oldInterests = ChallengeInterests.find({ challengeID: docID }).fetch();
       _.forEach(oldInterests, (old) => ChallengeInterests.removeIt(old._id));
       // add the new interests
-      _.forEach(interestIDs, (interestID) => {
-        const interest = Interests.findSlugByID(interestID);
+      _.forEach(interestObj, (interest) => {
         ChallengeInterests.define({ challengeName, interest });
       });
     }

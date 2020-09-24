@@ -39,7 +39,7 @@ class AddChallenge extends React.Component {
     for (let i = 0; i < interestsArr.length; i++) {
       for (let j = 0; j < interests.length; j++) {
         if (interestsArr[i].name === interests[j]) {
-          interestsObj.push(interestsArr[i].slugID);
+          interestsObj.push(interestsArr[i]._id);
         }
       }
     }

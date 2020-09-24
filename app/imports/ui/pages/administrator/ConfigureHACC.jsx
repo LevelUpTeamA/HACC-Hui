@@ -44,6 +44,7 @@ class ConfigureHACC extends React.Component {
                 <Container>
                   {this.props.challenges.map((challenge) => {
                     const interestsArray = this.props.challengeInterests;
+                    console.log(interestsArray);
                     const chosenInterestArray = interestsArray.filter((item) => item.challengeID === challenge._id);
                     const challengeInterestIDs = chosenInterestArray.map((item) => item.interestID);
                     const interestsArr = this.props.interests;
@@ -55,7 +56,8 @@ class ConfigureHACC extends React.Component {
                         }
                       }
                     }
-                    const interestsString = interestsObj.join(' ');
+                    console.log(challenge._id);
+                    const interestsString = interestsObj.join(', ');
                     return <ChallengeCard key={challenge._id} challenges={challenge} interests={ interestsString }/>;
                   })}
                 </Container>
@@ -111,12 +113,14 @@ export default withTracker(() => {
   const subscription = Challenges.subscribe();
   const subscription2 = Skills.subscribe();
   const subscription3 = Tools.subscribe();
+  const subscription4 = Interests.subscribe();
+  const subscription5 = ChallengeInterests.subscribe();
   return {
     challenges: Challenges.find({}).fetch(),
     challengeInterests: ChallengeInterests.find({}).fetch(),
     interests: Interests.find({}).fetch(),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
-    ready: subscription.ready() && subscription2.ready() && subscription3.ready(),
+    ready: subscription.ready() && subscription2.ready() && subscription3.ready() && subscription4 && subscription5,
   };
 })(ConfigureHACC);
