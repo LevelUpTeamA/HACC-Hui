@@ -29,7 +29,6 @@ class TeamCollection extends BaseSlugCollection {
       devPostPage: { type: String, optional: true },
       owner: { type: SimpleSchema.RegEx.Id },
       open: { type: Boolean },
-      image: { type: String },
     }));
   }
 
@@ -45,11 +44,11 @@ class TeamCollection extends BaseSlugCollection {
    * @param skills {string[]} the skills this team is looking for.
    * @param tools {string[]} the tools this team wants to use.
    * @param developers {string[]} the developers on the team.
-   * @param image {String} team's image
    * @return {string} the id of the team.
    */
   define({ name, description = '', gitHubRepo = '', devPostPage = '',
-           image = '', owner, open = true, challenges, skills, tools, developers = [] }) {
+           owner, open = true, challenges, skills, tools, developers = []
+         }) {
     const team = slugify(name);
     const slugID = Slugs.define({ name: team });
     // check to see if owner is a slug
@@ -80,10 +79,9 @@ class TeamCollection extends BaseSlugCollection {
    * @param challenges {String[]} the new set of challenges (optional).
    * @param skills {String[]} the new set of skills (optional).
    * @param tools {String[]} the new set of tools (optional).
-   * @param image {String} team's image
    * @param developers {String[]} the new set of developers (optional).
    */
-  update(docID, { name, description, open, image, challenges, skills, tools, developers }) {
+  update(docID, { name, description, open, challenges, skills, tools, developers }) {
     this.assertDefined(docID);
     const updateData = {};
     if (name) {
@@ -95,14 +93,11 @@ class TeamCollection extends BaseSlugCollection {
     if (_.isBoolean(open)) {
       updateData.open = open;
     }
-    if (image) {
-      updateData.image = image;
-    }
     this._collection.update(docID, { $set: updateData });
     const selector = { teamID: docID };
     const team = this.findSlugByID(docID);
     if (challenges) {
-     TeamChallenges.removeTeam(team);
+      TeamChallenges.removeTeam(team);
       _.forEach(challenges, (challenge) => TeamChallenges.define({ team, challenge }));
     }
     if (skills) {
@@ -152,7 +147,7 @@ class TeamCollection extends BaseSlugCollection {
    */
   dumpOne(docID) {
     this.assertDefined(docID);
-    const { name, description, owner, open, image } = this.findDoc(docID);
+    const { name, description, owner, open } = this.findDoc(docID);
     const selector = { teamID: docID };
     const teamChallenges = TeamChallenges.find(selector).fetch();
     const challenges = _.map(teamChallenges, (tC) => Challenges.findSlugByID(tC.challengeID));

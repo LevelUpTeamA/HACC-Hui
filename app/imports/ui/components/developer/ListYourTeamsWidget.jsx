@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { Grid, Header } from 'semantic-ui-react';
 import { Teams } from '../../../api/team/TeamCollection';
-import ListTeamExampleWidget from './ListTeamExampleWidget';
+import ListYourTeamExampleWidget from './ListYourTeamExampleWidget';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
@@ -54,7 +54,7 @@ class ListYourTeamsWidget extends React.Component {
             </Grid.Column>
           </Grid.Row>
           {this.props.teams.map((team) => (
-              <ListTeamExampleWidget key={team._id}
+              <ListYourTeamExampleWidget key={team._id}
                                      team={team}
                                      teamChallenges={getTeamChallenges(team)}
                                      teamSkills={getTeamSkills(team)}

@@ -11,16 +11,17 @@ import { Slugs } from '../../../api/slug/SlugCollection';
 class ListTeamExampleWidget extends React.Component {
   handleClick(e, inst) {
     console.log(e, inst);
-    const collectionName = WantsToJoin.getCollectionName();
+    const collectionName = Teams.getCollectionName();
     const teamDoc = Teams.findDoc(inst.id);
     const team = Slugs.getNameFromID(teamDoc.slugID);
     const developer = Developers.findDoc({ userID: Meteor.userId() }).username;
+    const instance = this.props.doc._id;
     const definitionData = {
       team,
       developer,
     };
-    console.log(collectionName, definitionData);
-    removeItMethod.call({ collectionName, definitionData }, (error) => {
+    console.log( collectionName, instance );
+    removeItMethod.call({ collectionName, instance }, (error) => {
       if (error) {
         console.error('Failed to define', error);
       }
@@ -43,7 +44,7 @@ class ListTeamExampleWidget extends React.Component {
             <Header as="h3">{this.props.teamTools.join(',')}</Header>
           </Grid.Column>
           <Grid.Column>
-            <Button id={this.props.team._id} color="#B22222" onClick={this.handleClick}>Remove.</Button>
+            <Button id={this.props.team._id} color="red" onClick={this.handleClick}>Remove</Button>
           </Grid.Column>
         </Grid.Row>
     );
