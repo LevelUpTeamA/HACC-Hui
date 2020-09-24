@@ -84,6 +84,7 @@ InterestedDevelopersWidget.propTypes = {
 };
 
 export default withTracker(() => {
+  console.log(InterestedDevs.find({}).fetch());
   return {
     developers: Developers.find({}).fetch(),
     developerChallenges: DeveloperChallenges.find({}).fetch(),
