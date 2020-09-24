@@ -34,6 +34,7 @@ import AddTool from '../pages/administrator/AddTool';
 import DumpDatabase from '../pages/administrator/DumpDatabase';
 import EditProfilePage from '../pages/developer/EditProfilePage';
 import DeleteForm from '../pages/developer/DeleteForm';
+import EditTeamPage from '../pages/developer/EditTeamPage';
 import ListTeamsPage from '../pages/developer/ListTeamsPage';
 import ListYourTeamsPage from "../pages/developer/ListYourTeamsPage";
 import InterestedDevelopers from '../pages/developer/InterestedDevelopers';
@@ -58,6 +59,7 @@ class App extends React.Component {
               <ProtectedRoute path={ROUTES.CREATE_PROFILE} component={Dprofile} />
               <ProtectedRoute path={ROUTES.EDIT_PROFILE} component={EditProfilePage} />
               <ProtectedRoute path={ROUTES.CREATE_TEAM} component={TeamCreation} />
+              <ProtectedRoute path={ROUTES.EDIT_TEAM} component={EditTeamPage} />
               <ProtectedRoute path={ROUTES.LIST_TEAMS} component={ListTeamsPage} />
                 <ProtectedRoute path={ROUTES.LIST_YOUR_TEAMS} component={ListYourTeamsPage} />
                 <ProtectedRoute path={ROUTES.DELETE_ACCOUNT} component={DeleteForm} />

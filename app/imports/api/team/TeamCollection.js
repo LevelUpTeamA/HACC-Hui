@@ -49,6 +49,7 @@ class TeamCollection extends BaseSlugCollection {
   define({ name, description = '', gitHubRepo = '', devPostPage = '',
            owner, open = true, challenges, skills, tools, developers = []
          }) {
+           owner, open = true, challenges, skills, tools, developers = [] }) {
     const team = slugify(name);
     const slugID = Slugs.define({ name: team });
     // check to see if owner is a slug
@@ -83,12 +84,19 @@ class TeamCollection extends BaseSlugCollection {
    */
   update(docID, { name, description, open, challenges, skills, tools, developers }) {
     this.assertDefined(docID);
+  update(docID, { name, description, gitHubRepo, devPostPage, open, challenges, skills, tools, developers }) {
+ this.assertDefined(docID);
     const updateData = {};
     if (name) {
       updateData.name = name;
     }
     if (description) {
       updateData.description = description;
+    } if (gitHubRepo) {
+      updateData.gitHubRepo = gitHubRepo;
+    }
+    if (devPostPage) {
+      updateData.devPostPage = devPostPage;
     }
     if (_.isBoolean(open)) {
       updateData.open = open;

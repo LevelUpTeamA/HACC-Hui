@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Container, Form, Grid, Header, Message, Segment, Divider, Image} from 'semantic-ui-react';
+import { Container, Form, Grid, Header, Message, Segment, Divider, Image } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 import { ROLE } from '../../api/role/Role';
 import { Developers } from '../../api/user/DeveloperCollection';
