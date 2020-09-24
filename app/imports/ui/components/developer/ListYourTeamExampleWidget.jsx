@@ -43,7 +43,7 @@ class ListTeamExampleWidget extends React.Component {
             <Header as="h3">{this.props.teamTools.join(',')}</Header>
           </Grid.Column>
           <Grid.Column>
-            <Button id={this.props.team._id} color="red" onClick={this.handleClick}>Remove</Button>
+            <Button id={this.props.team._id} color="#B22222" onClick={this.handleClick}>Remove</Button>
           </Grid.Column>
         </Grid.Row>
     );
