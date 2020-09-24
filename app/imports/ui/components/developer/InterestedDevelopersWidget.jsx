@@ -17,6 +17,7 @@ import { TeamTools } from '../../../api/team/TeamToolCollection';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Tools } from '../../../api/tool/ToolCollection'
 
+
 const getDeveloperChallenges = (dev) => {
   const teamID = dev._id;
   const devChallengeDocs = DeveloperChallenges.find({ teamID }).fetch();
@@ -40,6 +41,21 @@ const getDeveloperTools = (team) => {
 
 class InterestedDevelopersWidget extends React.Component {
   render() {
+
+    const universalDevs = this.props.developers;
+
+    function getInterestedDevelopers(devs) {
+      const data = [];
+      for (let i = 0; i < devs.length; i++) {
+        for (let j = 0; j < universalDevs.length; j++) {
+          if (devs[i].developerID === universalDevs[j]._id) {
+            data.push(universalDevs[j]);
+          }
+        }
+      }
+      // console.log(data);
+      return data;
+    }
     return (
         <Grid celled>
           <Grid.Row columns={5}>
@@ -50,7 +66,7 @@ class InterestedDevelopersWidget extends React.Component {
               <Header>Slack Username</Header>
             </Grid.Column>
             <Grid.Column>
-              <Header>Challenges</Header>
+              <Header>About Me</Header>
             </Grid.Column>
             <Grid.Column>
               <Header>Skills</Header>
@@ -59,14 +75,12 @@ class InterestedDevelopersWidget extends React.Component {
               <Header>Tools</Header>
             </Grid.Column>
           </Grid.Row>
-          {this.props.developers.map((dev) => (
-              <InterestedDeveloperExampleWidget key={dev._id}
-                                                developers={dev}
-                                                challenges={getDeveloperChallenges(dev)}
-                                                skills={getDeveloperSkills(dev)}
-                                                tools={getDeveloperTools(dev)}
-              />
-          ))}
+          {getInterestedDevelopers(this.props.interestedDevs).map((developers) => <InterestedDeveloperExampleWidget
+              key={developers._id} developers={developers}
+              skills={getDeveloperSkills(developers._id, this.props.developerSkills)}
+              tools={getDeveloperTools(developers._id, this.props.developerTools)}
+              challenges={getDeveloperChallenges(developers._id, this.props.developerChallenges)}
+          />)}
         </Grid>
     );
   }

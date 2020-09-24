@@ -15,7 +15,7 @@ class InterestedDeveloperExampleWidget extends React.Component {
             <Header as="h3">{this.props.developers.username}</Header>
           </Grid.Column>
           <Grid.Column>
-            <Header as="h3">{this.props.developers.challenges}</Header>
+            <Header as="h3">{this.props.developers.aboutMe}</Header>
           </Grid.Column>
           <Grid.Column>
             <Header as="h3">{this.props.skills.map((skill) => <p key={skill}>
