@@ -14,18 +14,18 @@ import { Developers } from '../../../api/user/DeveloperCollection';
 import { DeveloperInterests } from '../../../api/user/DeveloperInterestCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { DeveloperChallenges } from '../../../api/user/DeveloperChallengeCollection';
-import { TeamDevelopers } from '../../../api/team/TeamDeveloperCollection';
+import { Teams } from '../../../api/team/TeamCollection';
 
-const getDeveloperName = (interestedDevs) => {
-  const dID = interestedDevs.developerID;
-  const developerList = Developers.find({}).fetch();
-  let developerName = '';
-  for (const key in developerList) {
-    if (developerList[key]._id === dID) {
-      developerName = `${developerList[key].firstName} ${developerList[key].lastName}`;
+const getInterestedTeam = (interestedDevs) => {
+  const dID = interestedDevs.teamID;
+  const teamList = Teams.find({}).fetch();
+  let team = '';
+  for (const key in teamList) {
+    if (teamList[key]._id === dID) {
+      team = teamList[key].name;
     }
   }
-  return developerName;
+  return team;
 };
 
 const getDeveloperEducation = (interestedDevs) => {
@@ -113,17 +113,12 @@ class InterestedDevelopersWidget extends React.Component {
     }
     return (
         <Container>
-          <Grid celled>
-            <Grid.Row>
-              <Grid.Column>
-                <Header>Interested Developers</Header>
-              </Grid.Column>
-            </Grid.Row>
-            {getInterestedDevelopers(this.props.interestedDevs)
+          {getInterestedDevelopers(this.props.interestedDevs)
                 .map((developers) => (
                     <InterestedDeveloperExampleWidget
                         key={developers._id}
                         developer={developers}
+                        interestedTeam={getInterestedTeam(developers)}
                         developerSkills={getDeveloperSkills(developers)}
                         developerTools={getDeveloperTools(developers)}
                         developerInterests={getDeveloperInterests(developers)}
@@ -131,7 +126,6 @@ class InterestedDevelopersWidget extends React.Component {
                         developerEducation={getDeveloperEducation(developers)}
                     />
                 ))}
-          </Grid>
         </Container>
     );
   }
@@ -142,8 +136,6 @@ InterestedDevelopersWidget.propTypes = {
   interestedDevs: PropTypes.arrayOf(
       PropTypes.object,
   ),
-  currDev: PropTypes.string,
-  currTeam: PropTypes.string,
 };
 
 export default withTracker(() => {
