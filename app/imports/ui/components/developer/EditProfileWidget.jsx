@@ -7,7 +7,7 @@ import _ from 'lodash';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, BoolField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-semantic';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Developers } from '../../../api/user/DeveloperCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
@@ -91,7 +91,7 @@ class EditProfileWidget extends React.Component {
   }
 
   submit(data) {
-    // console.log('submit', data);
+    console.log('submit', data);
     let collectionName = Developers.getCollectionName();
     let updateData = {};
     // firstName, lastName, demographicLevel, lookingForTeam, challenges, interests,
@@ -138,14 +138,14 @@ class EditProfileWidget extends React.Component {
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
         console.error(error);
-        swal.fire({
+        Swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: 'Something went wrong!',
           footer: '<a href>Why do I have this issue?</a>',
         });
       } else {
-        swal.fire({
+        Swal.fire({
           icon: 'success',
           text: 'Your profile is updated.',
         });
