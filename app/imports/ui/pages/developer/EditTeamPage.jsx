@@ -48,7 +48,7 @@ const schema = new SimpleSchema({
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class TeamCreation extends React.Component {
+class EditTeamPage extends React.Component {
 
   /** On submit, insert the data.
    * @param formData {Object} the results from the form.
@@ -131,7 +131,7 @@ class TeamCreation extends React.Component {
             swal('Error', error.message, 'error');
             // console.error(error.message);
           } else {
-            swal('Success', 'Team created successfully', 'success');
+            swal('Success', 'Team updated successfully', 'success');
             formRef.reset();
             //   console.log('Success');
           }
@@ -168,7 +168,7 @@ class TeamCreation extends React.Component {
               }} className={'createTeam'}>
                 <Grid columns={1} style={{ paddingTop: '20px' }}>
                   <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Header as="h2" textAlign="center" inverted>Team Information</Header>
+                    <Header as="h2" textAlign="center" inverted>Edit Team Information</Header>
                     <Grid className='doubleLine'>
                       <TextField name='name' />
                       <RadioField
@@ -204,7 +204,7 @@ class TeamCreation extends React.Component {
   }
 }
 
-TeamCreation.propTypes = {
+EditTeamPage.propTypes = {
   challenges: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
@@ -227,4 +227,4 @@ export default withTracker(() => {
     // eslint-disable-next-line max-len
     ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready() && subscriptionDevelopers.ready(),
   };
-})(TeamCreation);
+})(EditTeamPage);
