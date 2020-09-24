@@ -1,28 +1,39 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header } from 'semantic-ui-react';
+import { Grid, Icon, Card } from 'semantic-ui-react';
 
 class InterestedDeveloperExampleWidget extends React.Component {
 
   render() {
     return (
-        <Grid.Row columns={5}>
+        <Grid.Row>
           <Grid.Column>
-            <Header as="h3">{this.props.developers.firstName} {this.props.developers.lastName}</Header>
-          </Grid.Column>
-          <Grid.Column>
-            <Header as="h3">{this.props.developers.username}</Header>
-          </Grid.Column>
-          <Grid.Column>
-            <Header as="h3">{this.props.developers.aboutMe}</Header>
-          </Grid.Column>
-          <Grid.Column>
-            <Header as="h3">{this.props.skills.map((skill) => <p key={skill}>
-              {skill.name}: {skill.level}</p>)}</Header>
-          </Grid.Column>
-          <Grid.Column>
-            <Header as="h3">{this.props.developers.tools}</Header>
+            <Card fluid>
+              <Card.Content>
+                <Card.Header>{this.props.developer.firstName} {this.props.developer.lastName}</Card.Header>
+                <Card.Meta>
+                  <span className='date'>Username: {this.props.developer.username}</span>
+                </Card.Meta>
+                <Card.Meta>
+                  <span className='date'>About {this.props.developer.firstName}: {this.props.developer.aboutMe}</span>
+                </Card.Meta>
+                <Card.Meta>
+                  <span className='date'>Education Level: {this.props.developer.demographicLevel}</span>
+                </Card.Meta>
+                <Card.Meta>
+                  <span className='date'>Skills: {this.props.developerSkills}</span>
+                </Card.Meta>
+                <Card.Meta>
+                  <span className='date'>Tools: {this.props.developerTools}</span>
+                </Card.Meta>
+                <Card.Meta>
+                  <span className='date'>Interests: {this.props.developerInterests}</span>
+                </Card.Meta>
+                <Card.Meta>
+                  <span className='date'>Challenges: {this.props.developerChallenges}</span>
+                </Card.Meta>
+              </Card.Content>
+            </Card>
           </Grid.Column>
         </Grid.Row>
     );
@@ -30,17 +41,14 @@ class InterestedDeveloperExampleWidget extends React.Component {
 }
 
 InterestedDeveloperExampleWidget.propTypes = {
-  team: PropTypes.object,
-  skills: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  tools: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  challenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  developers: PropTypes.object.isRequired,
+  developer: PropTypes.object,
+  developerName: PropTypes.string,
+  developerSkills: PropTypes.string,
+  developerTools: PropTypes.string,
+  developerInterests: PropTypes.string,
+  developerChallenges: PropTypes.string,
+  developerDescription: PropTypes.string,
+  developerEducation: PropTypes.string,
 };
 
 export default InterestedDeveloperExampleWidget;
