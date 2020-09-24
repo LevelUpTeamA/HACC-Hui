@@ -19,6 +19,6 @@ export const ROUTES = {
   ADD_CHALLENGE: '/add-challenge',
   ADD_SKILL: '/add-skill',
   ADD_TOOL: '/add-tool',
-  INTERESTED_DEVS: '/interested-developers/:_id',
+  INTERESTED_DEVELOPERS: '/interested-developers',
   DUMP_DATABASE: '/dump-database',
 };

@@ -57,7 +57,7 @@ class App extends React.Component {
               <ProtectedRoute path={ROUTES.EDIT_PROFILE} component={EditProfilePage} />
               <ProtectedRoute path={ROUTES.CREATE_TEAM} component={TeamCreation} />
               <ProtectedRoute path={ROUTES.LIST_TEAMS} component={ListTeamsPage} />
-              <ProtectedRoute path={ROUTES.INTERESTED_DEVS} component={InterestedDevelopers}/>
+              <ProtectedRoute path={ROUTES.INTERESTED_DEVELOPERS} component={InterestedDevelopers}/>
               <ProtectedRoute path={ROUTES.DELETE_ACCOUNT} component={DeleteForm} />
               <ProtectedRoute path="/list" component={ListStuff} />
               <ProtectedRoute path="/add" component={AddStuff} />

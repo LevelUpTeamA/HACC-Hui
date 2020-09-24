@@ -15,26 +15,26 @@ import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
 import { Teams } from '../../../api/team/TeamCollection';
-import { Tools } from '../../../api/tool/ToolCollection';
+import { Tools } from '../../../api/tool/ToolCollection'
 
-const getTeamChallenges = (team) => {
-  const teamID = team._id;
-  const teamChallengeDocs = TeamChallenges.find({ teamID }).fetch();
-  const challengeTitles = teamChallengeDocs.map((tc) => Challenges.findDoc(tc.challengeID).title);
+const getDeveloperChallenges = (dev) => {
+  const teamID = dev._id;
+  const devChallengeDocs = DeveloperChallenges.find({ teamID }).fetch();
+  const challengeTitles = devChallengeDocs.map((tc) => Challenges.findDoc(tc.challengeID).title);
   return challengeTitles;
 };
 
-const getTeamSkills = (team) => {
+const getDeveloperSkills = (team) => {
   const teamID = team._id;
-  const teamSkills = TeamSkills.find({ teamID }).fetch();
-  const skillNames = teamSkills.map((ts) => Skills.findDoc(ts.skillID).name);
+  const developerSkills = DeveloperSkills.find({ teamID }).fetch();
+  const skillNames = developerSkills.map((ts) => Skills.findDoc(ts.skillID).name);
   return skillNames;
 };
 
-const getTeamTools = (team) => {
+const getDeveloperTools = (team) => {
   const teamID = team._id;
-  const teamTools = TeamTools.find({ teamID }).fetch();
-  const toolNames = teamTools.map((tt) => Tools.findDoc(tt.toolID).name);
+  const developerTools = DeveloperTools.find({ teamID }).fetch();
+  const toolNames = developerTools.map((tt) => Tools.findDoc(tt.toolID).name);
   return toolNames;
 };
 
@@ -42,7 +42,7 @@ class InterestedDevelopersWidget extends React.Component {
   render() {
     return (
         <Grid celled>
-          <Grid.Row columns={6}>
+          <Grid.Row columns={5}>
             <Grid.Column>
               <Header>Name</Header>
             </Grid.Column>
@@ -59,12 +59,12 @@ class InterestedDevelopersWidget extends React.Component {
               <Header>Tools</Header>
             </Grid.Column>
           </Grid.Row>
-          {this.props.interestedDevs.map((dev) => (
+          {this.props.developers.map((dev) => (
               <InterestedDeveloperExampleWidget key={dev._id}
                                                 developers={dev}
-                                                challenges={getTeamChallenges(dev)}
-                                                skills={getTeamSkills(dev)}
-                                                tools={getTeamTools(dev)}
+                                                challenges={getDeveloperChallenges(dev)}
+                                                skills={getDeveloperSkills(dev)}
+                                                tools={getDeveloperTools(dev)}
               />
           ))}
         </Grid>
@@ -85,14 +85,11 @@ InterestedDevelopersWidget.propTypes = {
 
 export default withTracker(() => {
   return {
-    // eslint-disable-next-line max-len
     developers: Developers.find({}).fetch(),
     developerChallenges: DeveloperChallenges.find({}).fetch(),
     developerSkills: DeveloperSkills.find({}).fetch(),
     developerTools: DeveloperTools.find({}).fetch(),
-    // eslint-disable-next-line max-len
     interestedDevs: InterestedDevs.find({}).fetch(),
-    // teams: Teams.find({ _id: documentId }).fetch(),
     skills: Skills.find({}).fetch(),
     challenges: Challenges.find({}).fetch(),
     tools: Tools.find({}).fetch(),
