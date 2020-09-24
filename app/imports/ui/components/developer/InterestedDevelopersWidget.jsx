@@ -17,83 +17,43 @@ import { DeveloperChallenges } from '../../../api/user/DeveloperChallengeCollect
 import { Teams } from '../../../api/team/TeamCollection';
 
 const getInterestedTeam = (interestedDevs) => {
-  const dID = interestedDevs.teamID;
-  const teamList = Teams.find({}).fetch();
-  let team = '';
-  for (const key in teamList) {
-    if (teamList[key]._id === dID) {
-      team = teamList[key].name;
-    }
-  }
-  return team;
-};
-
-const getDeveloperEducation = (interestedDevs) => {
-  const dID = interestedDevs.developerID;
-  const developerList = Developers.find({}).fetch();
-  let developerEducation = '';
-  for (const key in developerList) {
-    if (developerList[key]._id === dID) {
-      developerEducation = developerList[key].demographicLevel;
-    }
-  }
-  return developerEducation;
+  const developerID = interestedDevs._id;
+  let teamTitles = '';
+  const interestedDevsDocs = InterestedDevs.find({ developerID }).fetch();
+  teamTitles = interestedDevsDocs.map((tc) => Teams.findDoc(tc.teamID).name);
+  return teamTitles.join(', ');
 };
 
 const getDeveloperSkills = (interestedDevs) => {
-  let dID = interestedDevs.developerID;
-  const developerList = Developers.find({}).fetch();
+  const developerID = interestedDevs._id;
   let skillTitles = '';
-  for (const key in developerList) {
-    if (developerList[key]._id === dID) {
-      dID = developerList[key]._id;
-      const developerSkillsDocs = DeveloperSkills.find({ dID }).fetch();
-      skillTitles = developerSkillsDocs.map((tc) => Skills.findDoc(tc.skillID).name);
-    }
-  }
-  return skillTitles;
+  const developerSkillsDocs = DeveloperSkills.find({ developerID }).fetch();
+  skillTitles = developerSkillsDocs.map((ts) => Skills.findDoc(ts.skillID).title);
+  return skillTitles.join(', ');
 };
 
 const getDeveloperTools = (interestedDevs) => {
-  let dID = interestedDevs.developerID;
-  const developerList = Developers.find({}).fetch();
+  const developerID = interestedDevs._id;
   let toolTitles = '';
-  for (const key in developerList) {
-    if (developerList[key]._id === dID) {
-      dID = developerList[key]._id;
-      const developerToolsDocs = DeveloperTools.find({ dID }).fetch();
-      toolTitles = developerToolsDocs.map((tc) => Tools.findDoc(tc.toolID).name);
-    }
-  }
-  return toolTitles;
+  const developerToolsDocs = DeveloperTools.find({ developerID }).fetch();
+  toolTitles = developerToolsDocs.map((tt) => Tools.findDoc(tt.toolID).title);
+  return toolTitles.join(', ');
 };
 
 const getDeveloperInterests = (interestedDevs) => {
-  let dID = interestedDevs.developerID;
-  const developerList = Developers.find({}).fetch();
+  const developerID = interestedDevs._id;
   let interestTitles = '';
-  for (const key in developerList) {
-    if (developerList[key]._id === dID) {
-      dID = developerList[key]._id;
-      const developerInterestsDocs = DeveloperInterests.find({ dID }).fetch();
-      interestTitles = developerInterestsDocs.map((tc) => Interests.findDoc(tc.interestID).name);
-    }
-  }
-  return interestTitles;
+  const developerInterestsDocs = DeveloperInterests.find({ developerID }).fetch();
+  interestTitles = developerInterestsDocs.map((ti) => Interests.findDoc(ti.interestID).name);
+  return interestTitles.join(', ');
 };
 
 const getDeveloperChallenges = (interestedDevs) => {
-  let dID = interestedDevs.developerID;
-  const developerList = Developers.find({}).fetch();
+  const developerID = interestedDevs._id;
   let challengeTitles = '';
-  for (const key in developerList) {
-    if (developerList[key]._id === dID) {
-      dID = developerList[key]._id;
-      const developerChallengesDocs = DeveloperChallenges.find({ dID }).fetch();
-      challengeTitles = developerChallengesDocs.map((tc) => Challenges.findDoc(tc.challengeID).title);
-    }
-  }
-  return challengeTitles;
+  const developerChallengesDocs = DeveloperChallenges.find({ developerID }).fetch();
+  challengeTitles = developerChallengesDocs.map((tc) => Challenges.findDoc(tc.challengeID).title);
+  return challengeTitles.join(', ');
 };
 
 class InterestedDevelopersWidget extends React.Component {
@@ -123,7 +83,6 @@ class InterestedDevelopersWidget extends React.Component {
                         developerTools={getDeveloperTools(developers)}
                         developerInterests={getDeveloperInterests(developers)}
                         developerChallenges={getDeveloperChallenges(developers)}
-                        developerEducation={getDeveloperEducation(developers)}
                     />
                 ))}
         </Container>
