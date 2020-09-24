@@ -44,7 +44,7 @@ const getDeveloperInterests = (interestedDevs) => {
   const developerID = interestedDevs._id;
   let interestTitles = '';
   const developerInterestsDocs = DeveloperInterests.find({ developerID }).fetch();
-  interestTitles = developerInterestsDocs.map((ti) => Interests.findDoc(ti.interestID).name);
+  interestTitles = developerInterestsDocs.map((ti) => Interests.findDoc(ti.interestID).title);
   return interestTitles.join(', ');
 };
 
