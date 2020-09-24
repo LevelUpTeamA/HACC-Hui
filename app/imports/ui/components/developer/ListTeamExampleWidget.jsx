@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid, Header } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Button, Grid, Header, Icon } from 'semantic-ui-react';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import { Developers } from '../../../api/user/DeveloperCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
@@ -32,6 +33,10 @@ class ListTeamExampleWidget extends React.Component {
         <Grid.Row columns={5}>
           <Grid.Column>
             <Header as="h3">{this.props.team.name}</Header>
+            <Icon className='segIcon' name='edit'/>
+            {this.props.team.owner === Developers.findDoc({ userID: Meteor.userId() })._id ?
+                <Link className='edit' to={`/edit-team/${this.props.team._id}`}>Edit</Link>
+                : '' }
           </Grid.Column>
           <Grid.Column>
             <Header as="h3">{this.props.teamChallenges.join(',')}</Header>

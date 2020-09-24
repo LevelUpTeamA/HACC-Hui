@@ -10,17 +10,19 @@ import {
 import swal from 'sweetalert';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
-import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import MultiSelectField from '../../components/form-fields/MultiSelectField';
 import RadioField from '../../components/form-fields/RadioField';
 import { Teams } from '../../../api/team/TeamCollection';
+import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
+import { TeamSkills } from '../../../api/team/TeamSkillCollection';
+import { TeamTools } from '../../../api/team/TeamToolCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
-import { defineMethod } from '../../../api/base/BaseCollection.methods';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Developers } from '../../../api/user/DeveloperCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
 
@@ -31,7 +33,6 @@ const schema = new SimpleSchema({
     allowedValues: ['Open', 'Close'],
     label: 'Availability',
   },
-  name: String,
   image: { type: String, optional: true },
   challenges: { type: Array, label: 'Challenges' },
   'challenges.$': { type: String },
@@ -40,9 +41,30 @@ const schema = new SimpleSchema({
   tools: { type: Array, label: 'Toolsets' },
   'tools.$': { type: String },
   description: String,
-  github: { type: String, optional: true },
-  devpostPage: { type: String, optional: true },
+  gitHubRepo: { type: String, optional: true },
+  devPostPage: { type: String, optional: true },
 });
+
+const getTeamChallenges = (team) => {
+  const teamID = team._id;
+  const teamChallengeDocs = TeamChallenges.find({ teamID }).fetch();
+  const challengeTitles = teamChallengeDocs.map((tc) => Challenges.findDoc(tc.challengeID).title);
+  return challengeTitles;
+};
+
+const getTeamSkills = (team) => {
+  const teamID = team._id;
+  const teamSkills = TeamSkills.find({ teamID }).fetch();
+  const skillNames = teamSkills.map((ts) => Skills.findDoc(ts.skillID).name);
+  return skillNames;
+};
+
+const getTeamTools = (team) => {
+  const teamID = team._id;
+  const teamTools = TeamTools.find({ teamID }).fetch();
+  const toolNames = teamTools.map((tt) => Tools.findDoc(tt.toolID).name);
+  return toolNames;
+};
 
 /**
  * Renders the Page for adding stuff. **deprecated**
@@ -67,10 +89,10 @@ class EditTeamPage extends React.Component {
     const challengesArr = this.props.challenges;
     const challengesObj = [];
 
-    const owner = Developers.findDoc({ userID: Meteor.userId() }).username;
+    const owner = this.props.developers[0].slugID;
 
     const {
-      name, description, challenges, skills, tools, image,
+      description, gitHubRepo, devPostPage, challenges, skills, tools, image, _id,
     } = formData;
     let { open } = formData;
     // console.log(challenges, skills, tools, open);
@@ -105,15 +127,12 @@ class EditTeamPage extends React.Component {
       }
     }
 
-    // If the name has special character or space, throw a swal error and return early.
-    if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
-      swal('Error', 'Sorry, no special characters or space allowed.', 'error');
-      return;
-    }
     const collectionName = Teams.getCollectionName();
-    const definitionData = {
-      name,
+    const updateData = {
+      id: _id,
       description,
+      gitHubRepo,
+      devPostPage,
       owner,
       open,
       image,
@@ -122,9 +141,9 @@ class EditTeamPage extends React.Component {
       tools: toolsObj,
     };
     // console.log(collectionName, definitionData);
-    defineMethod.call({
+    updateMethod.call({
           collectionName,
-          definitionData,
+          updateData,
         },
         (error) => {
           if (error) {
@@ -158,34 +177,33 @@ class EditTeamPage extends React.Component {
             <Divider hidden />
             <AutoForm ref={ref => {
               fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
+            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)} model={this.props.doc }
                       style={{
                         paddingBottom: '40px',
                       }}>
               <Segment style={{
                 borderRadius: '10px',
                 backgroundColor: '#5C93D1',
-              }} className={'createTeam'}>
+              }}>
                 <Grid columns={1} style={{ paddingTop: '20px' }}>
                   <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Header as="h2" textAlign="center" inverted>Edit Team Information</Header>
+                    <Header as="h2" textAlign="center" inverted>Team Information</Header>
                     <Grid className='doubleLine'>
-                      <TextField name='name' />
                       <RadioField
                           name='open'
                           inline
                       />
                     </Grid>
-                    <TextField name='image' placeholder={'Team Image URL'} />
+                    <TextField name='image' />
                     <LongTextField name='description' />
-                    <MultiSelectField name='challenges' placeholder={'Challenges'}
+                    <MultiSelectField name='challenges' placeholder={getTeamChallenges(this.props.challengeDoc)}
                                       allowedValues={challengeArr} required />
-                    <MultiSelectField name='skills' placeholder={'Skills'}
+                    <MultiSelectField name='skills' placeholder={getTeamSkills(this.props.skillDoc)}
                                       allowedValues={skillArr} required />
-                    <MultiSelectField name='tools' placeholder={'Toolsets'}
+                    <MultiSelectField name='tools' placeholder={getTeamTools(this.props.toolDoc)}
                                       allowedValues={toolArr} required />
-                    <TextField name="github" />
-                    <TextField name="devpostPage" />
+                    <TextField name="gitHubRepo" />
+                    <TextField name="devPostPage" />
                   </Grid.Column>
                 </Grid>
                 <div align='center'>
@@ -205,21 +223,31 @@ class EditTeamPage extends React.Component {
 }
 
 EditTeamPage.propTypes = {
+  currentUser: PropTypes.string,
   challenges: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
   developers: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
-
+  doc: PropTypes.object,
+  challengeDoc: PropTypes.object,
+  skillDoc: PropTypes.object,
+  toolDoc: PropTypes.object,
+  model: PropTypes.object,
 };
 
-export default withTracker(() => {
+export default withTracker(({ match }) => {
+  const documentId = match.params._id;
   const subscriptionChallenges = Challenges.subscribe();
   const subscriptionSkills = Skills.subscribe();
   const subscriptionTools = Tools.subscribe();
   const subscriptionDevelopers = Developers.subscribe();
 
   return {
+    doc: Teams.findOne(documentId),
+    challengeDoc: TeamChallenges.find(documentId),
+    skillDoc: TeamSkills.find(documentId),
+    toolDoc: TeamTools.find(documentId),
     challenges: Challenges.find({}).fetch(),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
