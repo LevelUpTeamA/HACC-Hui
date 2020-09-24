@@ -17,7 +17,7 @@ class InterestedDeveloperExampleWidget extends React.Component {
                       <span className='date'>Username: {this.props.developer.username}</span>
                     </Card.Meta>
                     <Card.Meta>
-                      <span className='date'>Interested Team: {this.props.developer.interestedTeam}</span>
+                      <span className='date'>Interested Team: {this.props.interestedTeam}</span>
                     </Card.Meta>
                     <br/>
                     <Card.Description>
