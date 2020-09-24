@@ -7,7 +7,7 @@ import _ from 'lodash';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, BoolField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-semantic';
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 import { Developers } from '../../../api/user/DeveloperCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
@@ -134,18 +134,18 @@ class EditProfileWidget extends React.Component {
     if (data.aboutMe) {
       updateData.aboutMe = data.aboutMe;
     }
-    // console.log(collectionName, updateData);
+    console.log(collectionName, updateData);
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
         console.error(error);
-        Swal.fire({
+        swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: 'Something went wrong!',
           footer: '<a href>Why do I have this issue?</a>',
         });
       } else {
-        Swal.fire({
+        swal.fire({
           icon: 'success',
           text: 'Your profile is updated.',
         });
