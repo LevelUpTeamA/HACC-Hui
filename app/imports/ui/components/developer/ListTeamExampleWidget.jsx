@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Header } from 'semantic-ui-react';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
+import { InterestedDevs } from '../../../api/team/InterestedDevCollection';
 import { Developers } from '../../../api/user/DeveloperCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Teams } from '../../../api/team/TeamCollection';
@@ -21,6 +22,13 @@ class ListTeamExampleWidget extends React.Component {
     };
     console.log(collectionName, definitionData);
     defineMethod.call({ collectionName, definitionData }, (error) => {
+      if (error) {
+        console.error('Failed to define', error);
+      }
+    });
+    const collectionName2 = InterestedDevs.getCollectionName();
+    console.log(collectionName2, definitionData);
+    defineMethod.call({ collectionName: collectionName2, definitionData }, (error) => {
       if (error) {
         console.error('Failed to define', error);
       }

@@ -27,7 +27,7 @@ class ChallengeInterestCollection extends BaseCollection {
    */
   define({ challenge, interest }) {
     const challengeID = Challenges.getID(challenge);
-    const interestID = Interests.findIdBySlug(interest);
+    const interestID = interest;
     const docID = this._collection.insert({ challengeID, interestID });
     return docID;
   }
@@ -45,7 +45,7 @@ class ChallengeInterestCollection extends BaseCollection {
       updateData.challengeID = Challenges.getID(challenge);
     }
     if (interest) {
-      updateData.interestID = Interests.getID(interest);
+      updateData.interestID = interest;
     }
     this._collection.update(docID, { $set: updateData });
   }

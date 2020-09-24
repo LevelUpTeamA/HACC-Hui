@@ -25,17 +25,19 @@ import AgePage from '../pages/developer/AgePage';
 import ParticipationForm from '../pages/developer/ParticipationForm';
 import UnderParticipationForm from '../pages/developer/UnderParticipationForm';
 import Dprofile from '../pages/developer/Dprofile';
-import TeamCreation from '../pages/developer/TeamCreation';
 import { ROUTES } from '../../startup/client/route-constants';
-import DeleteForm from '../pages/developer/DeleteForm';
 import ConfigureHACC from '../pages/administrator/ConfigureHACC';
+import TeamCreation from '../pages/developer/TeamCreation';
 import AddChallenge from '../pages/administrator/AddChallenge';
 import AddSkill from '../pages/administrator/AddSkill';
 import AddTool from '../pages/administrator/AddTool';
 import DumpDatabase from '../pages/administrator/DumpDatabase';
 import EditProfilePage from '../pages/developer/EditProfilePage';
+import DeleteForm from '../pages/developer/DeleteForm';
 import ListTeamsPage from '../pages/developer/ListTeamsPage';
 import ListYourTeamsPage from "../pages/developer/ListYourTeamsPage";
+import InterestedDevelopers from '../pages/developer/InterestedDevelopers';
+
 
 /**
  * Top-level layout component for this application. Called in imports/startup/client/startup.jsx.
@@ -59,9 +61,13 @@ class App extends React.Component {
               <ProtectedRoute path={ROUTES.LIST_TEAMS} component={ListTeamsPage} />
                 <ProtectedRoute path={ROUTES.LIST_YOUR_TEAMS} component={ListYourTeamsPage} />
                 <ProtectedRoute path={ROUTES.DELETE_ACCOUNT} component={DeleteForm} />
+              <ProtectedRoute path={ROUTES.INTERESTED_DEVELOPERS} component={InterestedDevelopers}/>
+              <ProtectedRoute path={ROUTES.DELETE_ACCOUNT} component={DeleteForm} />
               <ProtectedRoute path="/list" component={ListStuff} />
               <ProtectedRoute path="/add" component={AddStuff} />
-              <ProtectedRoute path="/edit/:_id" component={EditStuff} />
+              <ProtectedRoute path="/editChallenges/:_id" component={EditChallenges} />
+              <ProtectedRoute path="/editSkills/:_id" component={EditSkills} />
+              <ProtectedRoute path="/editTools/:_id" component={EditTools} />
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin} />
               <AdminProtectedRoute path={ROUTES.CONFIGURE_HACC} component={ConfigureHACC} />
               <AdminProtectedRoute path={ROUTES.ADD_CHALLENGE} component={AddChallenge} />

@@ -67,7 +67,7 @@ export const updateMethod = new ValidatedMethod({
     // console.log('updateMethod(%o, %o)', collectionName, updateData);
     const collection = HACCHui.getCollection(collectionName);
     collection.assertValidRoleForMethod(this.userId);
-    collection.update(updateData._id, updateData);
+    collection.update(updateData.id, updateData);
     return true;
   },
 });

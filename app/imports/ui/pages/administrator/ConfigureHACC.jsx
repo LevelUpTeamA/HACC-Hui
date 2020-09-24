@@ -1,15 +1,17 @@
 import React from 'react';
-import { Table, Header, Loader, Grid, Button } from 'semantic-ui-react';
+import { Container, Header, Loader, Grid, Button } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
-import ChallengesAdmin from '../../components/administrator/ChallengesAdmin';
-import SkillsAdmin from '../../components/administrator/SkillsAdmin';
-import ToolsAdmin from '../../components/administrator/ToolsAdmin';
+import SkillsCard from '../../components/administrator/SkillsCard';
+import ToolsCard from '../../components/administrator/ToolsCard';
 import { ROUTES } from '../../../startup/client/route-constants';
+import ChallengeCard from '../../components/administrator/ChallengeCard';
+import { ChallengeInterests } from '../../../api/challenge/ChallengeInterestCollection';
+import { Interests } from '../../../api/interest/InterestCollection';
 // import { removeItMethod } from '../../api/base/BaseCollection.methods';
 // import swal from 'sweetalert';
 
@@ -32,82 +34,61 @@ class ConfigureHACC extends React.Component {
         <div>
           <Header as="h1" textAlign="center">Configure the HACC</Header>
           <Grid divided>
-            <Grid.Row>
-              <Grid.Column width={10}>
-                <Header as="h2" textAlign="center">Challenges</Header>
-
-                <Grid>
-                  <Grid.Column textAlign="center">
-                    <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_CHALLENGE} key='addChallenge'
-                            size='large'>Add Challenge</Button>
-                  </Grid.Column>
-                </Grid>
-
-                <Table celled>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Title</Table.HeaderCell>
-                      <Table.HeaderCell>Description</Table.HeaderCell>
-                      <Table.HeaderCell>Submission Details</Table.HeaderCell>
-                      <Table.HeaderCell>Pitch</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {this.props.challenges.map((challenges => <ChallengesAdmin key={challenges._id}
-                                                                               challenges={challenges} />))}
-                  </Table.Body>
-                </Table>
+            <Grid.Row centered>
+              <Grid.Column width={14} centered>
+                <Container style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
+                  <Header as="h2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>Challenges</Header>
+                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_CHALLENGE} key='addChallenge'
+                          size='mini' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
+                </Container>
+                <Container>
+                  {this.props.challenges.map((challenge) => {
+                    const interestsArray = this.props.challengeInterests;
+                    const chosenInterestArray = interestsArray.filter((item) => item.challengeID === challenge._id);
+                    const challengeInterestIDs = chosenInterestArray.map((item) => item.interestID);
+                    const interestsArr = this.props.interests;
+                    const interestsObj = [];
+                    for (let i = 0; i < interestsArr.length; i++) {
+                      for (let j = 0; j < challengeInterestIDs.length; j++) {
+                        if (interestsArr[i]._id === challengeInterestIDs[j]) {
+                          interestsObj.push(interestsArr[i].name);
+                        }
+                      }
+                    }
+                    console.log(challenge._id);
+                    const interestsString = interestsObj.join(', ');
+                    return <ChallengeCard key={challenge._id} challenges={challenge} interests={ interestsString }/>;
+                  })}
+                </Container>
               </Grid.Column>
+            </Grid.Row>
+            <Grid.Row centered>
+              <Grid.Column width={14}>
+                <Container style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
+                  <Header as="h2" style={{ flex: 'display', alignItems: 'center', justifyContent: 'center' }}>Skills</Header>
+                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_SKILL} key='addChallenge'
+                          size='small' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
+                </Container>
 
-              <Grid.Column width={3}>
-                <Header as="h2" textAlign="center">Skills</Header>
-
-                <Grid>
-                  <Grid.Column textAlign="center">
-                    <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_SKILL} key='addSkill'
-                            size='large'>Add
-                      Skill</Button>
-                  </Grid.Column>
-                </Grid>
-
-                <Table celled>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Skills</Table.HeaderCell>
-                      <Table.HeaderCell>Description</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {this.props.skills.map((skills => <SkillsAdmin key={skills._id} skills={skills} />))}
-                  </Table.Body>
-                </Table>
+                <Container>
+                  {this.props.skills.map((skills => <SkillsCard key={skills._id} skills={skills} />))}
+                </Container>
               </Grid.Column>
+            </Grid.Row>
+            <Grid.Row centered>
+              <Grid.Column width={14}>
+                <Container style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
+                  <Header as="h2" style={{ flex: 'display', alignItems: 'center', justifyContent: 'center' }}>Tools</Header>
+                  <Button as={NavLink} activeClassName="active" exact to={ROUTES.ADD_TOOL} key='addChallenge'
+                          size='small' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
+                </Container>
 
-              <Grid.Column width={3}>
-                <Header as="h2" textAlign="center">Tools</Header>
-
-                <Grid>
-                  <Grid.Column textAlign="center">
-                    <Button as={NavLink} activeClassName="active" exact
-                            to={ROUTES.ADD_TOOL} key='addTool' size='large'>Add
-                      Tool</Button>
-                  </Grid.Column>
-                </Grid>
-
-                <Table celled>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Tools</Table.HeaderCell>
-                      <Table.HeaderCell>Description</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {this.props.tools.map((tools => <ToolsAdmin key={tools._id} tools={tools} />))}
-                  </Table.Body>
-                </Table>
+                <Container>
+                  {this.props.tools.map((tools => <ToolsCard
+                      key={tools._id} tools={tools} />))}
+                </Container>
 
               </Grid.Column>
-
             </Grid.Row>
           </Grid>
         </div>
@@ -121,6 +102,8 @@ ConfigureHACC.propTypes = {
   tools: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   challenges: PropTypes.array.isRequired,
+  challengeInterests: PropTypes.array.isRequired,
+  interests: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -129,10 +112,14 @@ export default withTracker(() => {
   const subscription = Challenges.subscribe();
   const subscription2 = Skills.subscribe();
   const subscription3 = Tools.subscribe();
+  const subscription4 = Interests.subscribe();
+  const subscription5 = ChallengeInterests.subscribe();
   return {
     challenges: Challenges.find({}).fetch(),
+    challengeInterests: ChallengeInterests.find({}).fetch(),
+    interests: Interests.find({}).fetch(),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
-    ready: subscription.ready() && subscription2.ready() && subscription3.ready(),
+    ready: subscription.ready() && subscription2.ready() && subscription3.ready() && subscription4 && subscription5,
   };
 })(ConfigureHACC);
