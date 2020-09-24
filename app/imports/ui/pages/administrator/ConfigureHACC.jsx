@@ -44,7 +44,6 @@ class ConfigureHACC extends React.Component {
                 <Container>
                   {this.props.challenges.map((challenge) => {
                     const interestsArray = this.props.challengeInterests;
-                    console.log(interestsArray);
                     const chosenInterestArray = interestsArray.filter((item) => item.challengeID === challenge._id);
                     const challengeInterestIDs = chosenInterestArray.map((item) => item.interestID);
                     const interestsArr = this.props.interests;

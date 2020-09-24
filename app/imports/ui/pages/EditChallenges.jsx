@@ -90,7 +90,7 @@ class EditChallenges extends React.Component {
 /** Require the presence of a Stuff document in the props object. Uniforms adds 'model' to the props, which we use. */
 EditChallenges.propTypes = {
   doc: PropTypes.object,
-  interests: PropTypes.object,
+  interests: PropTypes.array,
   model: PropTypes.object,
   ready: PropTypes.bool.isRequired,
 };

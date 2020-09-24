@@ -32,7 +32,7 @@ class SkillsCard extends React.Component {
               Edit
             </Button>
           </Link>
-          <Button basic color='red' size="small" onClick={() => deleteSkill(this.props.skills.slugID)}>
+            <Button basic color='red' size="small" onClick={() => deleteSkill(this.props.skills.slugID)}>
               Delete
             </Button>
         </Card.Content>
