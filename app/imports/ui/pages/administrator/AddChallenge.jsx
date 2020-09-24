@@ -45,7 +45,6 @@ class AddChallenge extends React.Component {
     }
     const definitionData = { title, description, interestsObj, submissionDetail, pitch };
     const collectionName = Challenges.getCollectionName();
-    console.log(collectionName);
     defineMethod.call({ collectionName: collectionName, definitionData: definitionData },
         (error) => {
           if (error) {

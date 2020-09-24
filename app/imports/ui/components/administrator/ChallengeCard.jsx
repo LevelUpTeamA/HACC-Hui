@@ -24,6 +24,7 @@ class ChallengeCard extends React.Component {
           <Card.Header>{this.props.challenges.title}</Card.Header>
           <Card.Meta>Submission Detail: {this.props.challenges.submissionDetail}</Card.Meta>
           <Card.Meta>Pitch: {this.props.challenges.pitch}</Card.Meta>
+          <Card.Meta>Interests: {this.props.interests}</Card.Meta>
           <Card.Description>
             {this.props.challenges.description}
           </Card.Description>
@@ -46,6 +47,7 @@ class ChallengeCard extends React.Component {
 // Require a document to be passed to this component.
 ChallengeCard.propTypes = {
   challenges: PropTypes.object.isRequired,
+  interests: PropTypes.string.isRequired,
 };
 
 export default withRouter(ChallengeCard);

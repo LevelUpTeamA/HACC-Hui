@@ -10,6 +10,8 @@ import SkillsCard from '../../components/administrator/SkillsCard';
 import ToolsCard from '../../components/administrator/ToolsCard';
 import { ROUTES } from '../../../startup/client/route-constants';
 import ChallengeCard from '../../components/administrator/ChallengeCard';
+import { ChallengeInterests } from '../../../api/challenge/ChallengeInterestCollection';
+import { Interests } from '../../../api/interest/InterestCollection';
 // import { removeItMethod } from '../../api/base/BaseCollection.methods';
 // import swal from 'sweetalert';
 
@@ -40,7 +42,22 @@ class ConfigureHACC extends React.Component {
                           size='mini' style={{ height: '50%', marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>+</Button>
                 </Container>
                 <Container>
-                    {this.props.challenges.map((challenges => <ChallengeCard key={challenges._id} challenges={challenges} />))}
+                  {this.props.challenges.map((challenge) => {
+                    const interestsArray = this.props.challengeInterests;
+                    const chosenInterestArray = interestsArray.filter((item) => item.challengeID === challenge._id);
+                    const challengeInterestIDs = chosenInterestArray.map((item) => item.interestID);
+                    const interestsArr = this.props.interests;
+                    const interestsObj = [];
+                    for (let i = 0; i < interestsArr.length; i++) {
+                      for (let j = 0; j < challengeInterestIDs.length; j++) {
+                        if (interestsArr[i]._id === challengeInterestIDs[j]) {
+                          interestsObj.push(interestsArr[i].name);
+                        }
+                      }
+                    }
+                    const interestsString = interestsObj.join(' ');
+                    return <ChallengeCard key={challenge._id} challenges={challenge} interests={ interestsString }/>;
+                  })}
                 </Container>
               </Grid.Column>
             </Grid.Row>
@@ -84,6 +101,8 @@ ConfigureHACC.propTypes = {
   tools: PropTypes.array.isRequired,
   skills: PropTypes.array.isRequired,
   challenges: PropTypes.array.isRequired,
+  challengeInterests: PropTypes.array.isRequired,
+  interests: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -94,6 +113,8 @@ export default withTracker(() => {
   const subscription3 = Tools.subscribe();
   return {
     challenges: Challenges.find({}).fetch(),
+    challengeInterests: ChallengeInterests.find({}).fetch(),
+    interests: Interests.find({}).fetch(),
     skills: Skills.find({}).fetch(),
     tools: Tools.find({}).fetch(),
     ready: subscription.ready() && subscription2.ready() && subscription3.ready(),
