@@ -32,7 +32,7 @@ class ToolsCard extends React.Component {
               Edit
             </Button>
           </Link>
-            <Button basic color='red' size="small" nClick={() => deleteTool(this.props.tools.slugID)}>
+          <Button basic color='red' size="small" onClick={() => deleteTool(this.props.tools.slugID)}>
               Delete
             </Button>
         </Card.Content>
