@@ -83,6 +83,7 @@ class TeamCollection extends BaseSlugCollection {
    */
   update(docID, { name, description, gitHubRepo, devPostPage, open, challenges, skills, tools, developers }) {
  this.assertDefined(docID);
+
     const updateData = {};
     if (name) {
       updateData.name = name;

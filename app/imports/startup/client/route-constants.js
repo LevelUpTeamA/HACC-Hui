@@ -23,4 +23,5 @@ export const ROUTES = {
   ADD_TOOL: '/add-tool',
   INTERESTED_DEVELOPERS: '/interested-developers',
   DUMP_DATABASE: '/dump-database',
+  TEAM_FINDER: '/team-finder',
 };

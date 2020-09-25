@@ -28,6 +28,7 @@ import Dprofile from '../pages/developer/Dprofile';
 import { ROUTES } from '../../startup/client/route-constants';
 import ConfigureHACC from '../pages/administrator/ConfigureHACC';
 import TeamCreation from '../pages/developer/TeamCreation';
+import TeamFinder from '../pages/developer/TeamFinder';
 import AddChallenge from '../pages/administrator/AddChallenge';
 import AddSkill from '../pages/administrator/AddSkill';
 import AddTool from '../pages/administrator/AddTool';
@@ -70,6 +71,8 @@ class App extends React.Component {
               <ProtectedRoute path="/editChallenges/:_id" component={EditChallenges} />
               <ProtectedRoute path="/editSkills/:_id" component={EditSkills} />
               <ProtectedRoute path="/editTools/:_id" component={EditTools} />
+              <ProtectedRoute path="/edit/:_id" component={EditStuff} />
+              <ProtectedRoute path={ROUTES.TEAM_FINDER} component = {TeamFinder}/>
               <AdminProtectedRoute path="/admin" component={ListStuffAdmin} />
               <AdminProtectedRoute path={ROUTES.CONFIGURE_HACC} component={ConfigureHACC} />
               <AdminProtectedRoute path={ROUTES.ADD_CHALLENGE} component={AddChallenge} />
