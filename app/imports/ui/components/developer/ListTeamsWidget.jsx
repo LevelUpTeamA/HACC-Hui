@@ -36,7 +36,7 @@ class ListTeamsWidget extends React.Component {
   render() {
     return (
         <Grid celled>
-          <Grid.Row columns={5}>
+          <Grid.Row columns={6}>
             <Grid.Column>
               <Header>Name</Header>
             </Grid.Column>
@@ -52,6 +52,9 @@ class ListTeamsWidget extends React.Component {
             <Grid.Column>
               <Header>Join?</Header>
             </Grid.Column>
+            <Grid.Column>
+              <Header>Desired Tools</Header>
+            </Grid.Column>
           </Grid.Row>
           {this.props.teams.map((team) => (
               <ListTeamExampleWidget key={team._id}
@@ -62,6 +65,7 @@ class ListTeamsWidget extends React.Component {
               />
           ))}
         </Grid>
+
     );
   }
 }

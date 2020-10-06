@@ -40,7 +40,6 @@ import ListTeamsPage from '../pages/developer/ListTeamsPage';
 import ListYourTeamsPage from "../pages/developer/ListYourTeamsPage";
 import InterestedDevelopers from '../pages/developer/InterestedDevelopers';
 
-
 /**
  * Top-level layout component for this application. Called in imports/startup/client/startup.jsx.
  * @memberOf ui/layouts
